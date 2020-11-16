@@ -8,9 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="Views\Categories\Backups\**" />
+    <Compile Remove="Views\Genders\Backup\**" />
+    <Compile Remove="Views\RoomTypes\Backups\**" />
     <Content Remove="Views\Categories\Backups\**" />
+    <Content Remove="Views\Genders\Backup\**" />
+    <Content Remove="Views\RoomTypes\Backups\**" />
     <EmbeddedResource Remove="Views\Categories\Backups\**" />
+    <EmbeddedResource Remove="Views\Genders\Backup\**" />
+    <EmbeddedResource Remove="Views\RoomTypes\Backups\**" />
     <None Remove="Views\Categories\Backups\**" />
+    <None Remove="Views\Genders\Backup\**" />
+    <None Remove="Views\RoomTypes\Backups\**" />
   </ItemGroup>
 
   <ItemGroup>

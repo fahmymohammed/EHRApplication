@@ -1,0 +1,47 @@
+﻿@model EHR.Database.RoomType
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<div class=" container border p-3 my-5" id="mainDiv" style="display:none">
+    <div class="mx-5">
+        <div class="col-12 row pt-4">
+            <h2>You are about to Delete <strong class="text-danger">@Model.RoomTypeName</strong> !</h2>
+
+        </div>
+        <hr />
+        <div class="col-md-10">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Room Type Name
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.RoomTypeName)
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <div class="form-group row col-4">
+                    <input type="hidden" asp-for="RoomTypeId" />
+                    <button type="submit" class="btn btn-danger mr-1"><i class="fas fa-trash-alt" style="font-size:20px"></i></button>
+                    <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#mainDiv").fadeIn(1000);
+        });
+
+    </script>
+
+}
