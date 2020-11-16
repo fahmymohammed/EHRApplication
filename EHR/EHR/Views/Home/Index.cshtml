@@ -2,7 +2,17 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center" id="mainDiv" style="display:none">
+    <h1 class="display-3"><b><strong>W</strong>elcome</b> <strong>B</strong>ack</h1>
+    <h5>@DateTime.Now.ToString("dddd, MMMM dd yyyy")</h5>
+    <img src="~/images/image.jpg" class="img-fluid img-thumbnail" style="border-radius:10%;width:20%;height:20%" />
 </div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#mainDiv").fadeIn(2000);
+
+        });
+    </script>
+}
