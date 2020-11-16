@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DB_Scripts\" />
+    <Folder Include="DB_Scripts_BK\" />
   </ItemGroup>
 
 </Project>

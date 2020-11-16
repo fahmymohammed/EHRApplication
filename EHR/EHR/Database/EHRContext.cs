@@ -30,6 +30,7 @@ namespace EHR.Database
         public virtual DbSet<Medicine> Medicine { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<Room> Room { get; set; }
+        public virtual DbSet<RoomType> RoomType { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -218,7 +219,7 @@ namespace EHR.Database
 
                 entity.Property(e => e.CategoryName)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<Doctor>(entity =>
@@ -319,7 +320,27 @@ namespace EHR.Database
 
                 entity.Property(e => e.AvailBeds).HasColumnName("availBeds");
 
+                entity.Property(e => e.RoomNum).HasColumnName("roomNum");
+
+                entity.Property(e => e.RoomTypeId).HasColumnName("roomTypeID");
+
                 entity.Property(e => e.TotalBeds).HasColumnName("totalBeds");
+
+                entity.HasOne(d => d.RoomType)
+                    .WithMany(p => p.Room)
+                    .HasForeignKey(d => d.RoomTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Room_RoomType");
+            });
+
+            modelBuilder.Entity<RoomType>(entity =>
+            {
+                entity.Property(e => e.RoomTypeId).HasColumnName("roomTypeID");
+
+                entity.Property(e => e.RoomTypeName)
+                    .IsRequired()
+                    .HasColumnName("roomTypeName")
+                    .HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -1,0 +1,294 @@
+USE [EHR]
+GO
+/****** Object:  Table [dbo].[admissionD]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[admissionD](
+	[admissionDID] [int] IDENTITY(1,1) NOT NULL,
+	[admissionHID] [int] NOT NULL,
+	[medicineID] [int] NOT NULL,
+ CONSTRAINT [PK_admissionDD] PRIMARY KEY CLUSTERED 
+(
+	[admissionDID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[admissionH]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[admissionH](
+	[admissionHID] [int] IDENTITY(1,1) NOT NULL,
+	[admissionDateTime] [datetime] NOT NULL,
+	[patientID] [int] NOT NULL,
+	[roomID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+ CONSTRAINT [PK_admissionD_1] PRIMARY KEY CLUSTERED 
+(
+	[admissionHID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Category]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Category](
+	[CategoryID] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [nvarchar](100) NOT NULL,
+ CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
+(
+	[CategoryID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Doctor]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Doctor](
+	[DoctorID] [int] IDENTITY(1,1) NOT NULL,
+	[DoctorFirstName] [nvarchar](50) NOT NULL,
+	[DoctorLastName] [nvarchar](50) NOT NULL,
+	[CategoryID] [int] NOT NULL,
+ CONSTRAINT [PK_Doctor] PRIMARY KEY CLUSTERED 
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Gender]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Gender](
+	[genderID] [int] IDENTITY(1,1) NOT NULL,
+	[genderName] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Gender] PRIMARY KEY CLUSTERED 
+(
+	[genderID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Medicine]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Medicine](
+	[medicineID] [int] IDENTITY(1,1) NOT NULL,
+	[medicineName] [nvarchar](50) NOT NULL,
+	[medicinePrice] [float] NOT NULL,
+ CONSTRAINT [PK_Medicine] PRIMARY KEY CLUSTERED 
+(
+	[medicineID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Patient]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Patient](
+	[patientID] [int] IDENTITY(1,1) NOT NULL,
+	[patientFirstName] [nvarchar](50) NOT NULL,
+	[patientLastName] [nvarchar](50) NOT NULL,
+	[patientDOB] [datetime] NOT NULL,
+	[genderID] [int] NOT NULL,
+	[patientAddresss] [nvarchar](50) NULL,
+	[patientCity] [nvarchar](15) NULL,
+	[patientZipCode] [int] NULL,
+	[patientState] [nvarchar](15) NULL,
+	[SSN] [int] NULL,
+	[patientMobile] [int] NULL,
+	[patientEmail] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Patient] PRIMARY KEY CLUSTERED 
+(
+	[patientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Room]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Room](
+	[roomID] [int] IDENTITY(1,1) NOT NULL,
+	[roomNum] [int] NOT NULL,
+	[totalBeds] [int] NOT NULL,
+	[availBeds] [int] NOT NULL,
+	[roomTypeID] [int] NOT NULL,
+ CONSTRAINT [PK_Room] PRIMARY KEY CLUSTERED 
+(
+	[roomID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoomType]    Script Date: 11/16/2020 11:09:43 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoomType](
+	[roomTypeID] [int] IDENTITY(1,1) NOT NULL,
+	[roomTypeName] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_RoomType] PRIMARY KEY CLUSTERED 
+(
+	[roomTypeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[admissionD] ON 
+GO
+INSERT [dbo].[admissionD] ([admissionDID], [admissionHID], [medicineID]) VALUES (1, 1, 3)
+GO
+SET IDENTITY_INSERT [dbo].[admissionD] OFF
+GO
+SET IDENTITY_INSERT [dbo].[admissionH] ON 
+GO
+INSERT [dbo].[admissionH] ([admissionHID], [admissionDateTime], [patientID], [roomID], [DoctorID]) VALUES (1, CAST(N'2021-01-01T00:00:00.000' AS DateTime), 1, 1, 1)
+GO
+SET IDENTITY_INSERT [dbo].[admissionH] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Category] ON 
+GO
+INSERT [dbo].[Category] ([CategoryID], [CategoryName]) VALUES (1, N'Addiction psychiatrist')
+GO
+INSERT [dbo].[Category] ([CategoryID], [CategoryName]) VALUES (2, N'Adolescent medicine specialist.Allergist (immunologist)')
+GO
+INSERT [dbo].[Category] ([CategoryID], [CategoryName]) VALUES (3, N'Anesthesiologist')
+GO
+INSERT [dbo].[Category] ([CategoryID], [CategoryName]) VALUES (4, N'Cardiac electrophysiologist.Cardiologist')
+GO
+INSERT [dbo].[Category] ([CategoryID], [CategoryName]) VALUES (5, N'Cardiovascular surgeon')
+GO
+INSERT [dbo].[Category] ([CategoryID], [CategoryName]) VALUES (6, N'Colon and rectal surgeon')
+GO
+SET IDENTITY_INSERT [dbo].[Category] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Doctor] ON 
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [DoctorFirstName], [DoctorLastName], [CategoryID]) VALUES (1, N'Sophia', N'Jacob', 1)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [DoctorFirstName], [DoctorLastName], [CategoryID]) VALUES (2, N'Isabella', N'Mason', 2)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [DoctorFirstName], [DoctorLastName], [CategoryID]) VALUES (3, N'William', N'Jayden', 3)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [DoctorFirstName], [DoctorLastName], [CategoryID]) VALUES (4, N'Ryan', N'Joseph', 4)
+GO
+SET IDENTITY_INSERT [dbo].[Doctor] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Gender] ON 
+GO
+INSERT [dbo].[Gender] ([genderID], [genderName]) VALUES (1, N'Binary Male')
+GO
+INSERT [dbo].[Gender] ([genderID], [genderName]) VALUES (2, N'Binary Female')
+GO
+INSERT [dbo].[Gender] ([genderID], [genderName]) VALUES (3, N'Male to Female')
+GO
+INSERT [dbo].[Gender] ([genderID], [genderName]) VALUES (4, N'Female to Male')
+GO
+INSERT [dbo].[Gender] ([genderID], [genderName]) VALUES (5, N'Non-Binary')
+GO
+INSERT [dbo].[Gender] ([genderID], [genderName]) VALUES (6, N'Genderfluid')
+GO
+SET IDENTITY_INSERT [dbo].[Gender] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Medicine] ON 
+GO
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (1, N'Amitriptyline', 100)
+GO
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (2, N'Amlodipine', 50)
+GO
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (3, N'Amoxicillin', 10)
+GO
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (4, N'Ativan', 100)
+GO
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (5, N'Atorvastatin', 75.5)
+GO
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (6, N'Azithromycin', 102.99)
+GO
+SET IDENTITY_INSERT [dbo].[Medicine] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Patient] ON 
+GO
+INSERT [dbo].[Patient] ([patientID], [patientFirstName], [patientLastName], [patientDOB], [genderID], [patientAddresss], [patientCity], [patientZipCode], [patientState], [SSN], [patientMobile], [patientEmail]) VALUES (1, N'Anna', N'Owen', CAST(N'1980-01-01T00:00:00.000' AS DateTime), 2, NULL, NULL, NULL, NULL, 123456789, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Patient] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Room] ON 
+GO
+INSERT [dbo].[Room] ([roomID], [roomNum], [totalBeds], [availBeds], [roomTypeID]) VALUES (1, 100, 5, 5, 1)
+GO
+INSERT [dbo].[Room] ([roomID], [roomNum], [totalBeds], [availBeds], [roomTypeID]) VALUES (2, 207, 10, 2, 3)
+GO
+SET IDENTITY_INSERT [dbo].[Room] OFF
+GO
+SET IDENTITY_INSERT [dbo].[RoomType] ON 
+GO
+INSERT [dbo].[RoomType] ([roomTypeID], [roomTypeName]) VALUES (1, N'MERGENCY ROOM')
+GO
+INSERT [dbo].[RoomType] ([roomTypeID], [roomTypeName]) VALUES (2, N'PHYSICIAN REFERRAL')
+GO
+INSERT [dbo].[RoomType] ([roomTypeID], [roomTypeName]) VALUES (3, N'LINIC REFERRAL')
+GO
+INSERT [dbo].[RoomType] ([roomTypeID], [roomTypeName]) VALUES (4, N'MO REFERRAL')
+GO
+SET IDENTITY_INSERT [dbo].[RoomType] OFF
+GO
+ALTER TABLE [dbo].[admissionD]  WITH CHECK ADD  CONSTRAINT [FK_admissionD_admissionH] FOREIGN KEY([admissionHID])
+REFERENCES [dbo].[admissionH] ([admissionHID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[admissionD] CHECK CONSTRAINT [FK_admissionD_admissionH]
+GO
+ALTER TABLE [dbo].[admissionD]  WITH CHECK ADD  CONSTRAINT [FK_admissionD_Medicine] FOREIGN KEY([medicineID])
+REFERENCES [dbo].[Medicine] ([medicineID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[admissionD] CHECK CONSTRAINT [FK_admissionD_Medicine]
+GO
+ALTER TABLE [dbo].[admissionH]  WITH CHECK ADD  CONSTRAINT [FK_admissionH_Doctor] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctor] ([DoctorID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[admissionH] CHECK CONSTRAINT [FK_admissionH_Doctor]
+GO
+ALTER TABLE [dbo].[admissionH]  WITH CHECK ADD  CONSTRAINT [FK_admissionH_Patient] FOREIGN KEY([patientID])
+REFERENCES [dbo].[Patient] ([patientID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[admissionH] CHECK CONSTRAINT [FK_admissionH_Patient]
+GO
+ALTER TABLE [dbo].[admissionH]  WITH CHECK ADD  CONSTRAINT [FK_admissionH_Room] FOREIGN KEY([roomID])
+REFERENCES [dbo].[Room] ([roomID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[admissionH] CHECK CONSTRAINT [FK_admissionH_Room]
+GO
+ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_Category] FOREIGN KEY([CategoryID])
+REFERENCES [dbo].[Category] ([CategoryID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_Category]
+GO
+ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_Gender] FOREIGN KEY([genderID])
+REFERENCES [dbo].[Gender] ([genderID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_Gender]
+GO
+ALTER TABLE [dbo].[Room]  WITH CHECK ADD  CONSTRAINT [FK_Room_RoomType] FOREIGN KEY([roomTypeID])
+REFERENCES [dbo].[RoomType] ([roomTypeID])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [dbo].[Room] CHECK CONSTRAINT [FK_Room_RoomType]
+GO
