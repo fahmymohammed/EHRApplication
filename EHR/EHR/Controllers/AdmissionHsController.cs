@@ -180,6 +180,14 @@ namespace EHR.Controllers
 
             return View();
         }
+        public ActionResult CreateNewAdmissionVue()
+        {
+            ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
+            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
+            ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
+
+            return View();
+        }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]

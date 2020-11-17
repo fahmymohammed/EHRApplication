@@ -14,29 +14,27 @@
 
         <div class="form-group row col-4">
             <label class="control-label">Patient</label>
-            <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId" id="PatientId"></select>
+            <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId" v-model="userData.PatientId"></select>
             <span asp-validation-for="PatientId" class="text-danger"></span>
         </div>
         <div class="form-group row col-4">
             <label class="control-label">Date</label>
-            <input asp-for="AdmissionDateTime" class="form-control" id="AdmissionDateTime" type="text" />
+            <input asp-for="AdmissionDateTime" class="form-control" v-model="userData.AdmissionDateTime" type="text" />
             <span asp-validation-for="AdmissionDateTime" class="text-danger"></span>
         </div>
         <div class="form-group row col-4">
             <label class="control-label">Doctor</label>
-            <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId" id="DoctorId"></select>
+            <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId" v-model="userData.DoctorId"></select>
             <span asp-validation-for="DoctorId" class="text-danger"></span>
         </div>
         <div class="form-group row col-4">
             <label class="control-label">Room</label>
-            <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId" id="RoomId"></select>
+            <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId" v-model="userData.RoomId"></select>
             <span asp-validation-for="RoomId" class="text-danger"></span>
         </div>
 
         <div class="form-group row col-4">
-            <button type="button" class="btn btn-outline-primary mr-1" id="submit">Create New</button>
-
-            @*<input type="submit" value="Create" class="btn btn-outline-primary mr-1" />*@
+            <input type="submit" value="Create" class="btn btn-outline-primary mr-1" v-on:click="clickme" />
             <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
         </div>
 
@@ -63,37 +61,35 @@
 
         });
 
-        $('#submit').click(function () {
-            var mydata = {
-                PatientId: $('#PatientId option:selected').val(),
-                RoomId: $('#RoomId option:selected').val(),
-                DoctorId: $('#DoctorId option:selected').val(),
-                AdmissionDateTime: $('#AdmissionDateTime').val()
-            }
-            console.log(mydata.PatientId);
-            console.log(mydata.RoomId);
-            console.log(mydata.DoctorId);
-            console.log(mydata.AdmissionDateTime);
-            console.log(mydata);
-
-            $.ajax({
-                type: 'POST',
-                url: '/AdmissionHs/CreateNewAdmissionPost/',
-                data: JSON.stringify(mydata),
-                contentType: 'application/json',
-                dataType: 'JSON',
-                success: function (response) {
-                    if (response.status) {
-
-                    } else {
-
-                    }
+        let mainDiv = new Vue({
+            el: '#mainDiv',
+            data: {
+                userData: {
+                    PatientId: "",
+                    RoomId: "",
+                    DoctorId: "",
+                    AdmissionDateTime: ""
                 }
-            });
-        })
 
+            },
+            methods: {
+                clickme: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/AdmissionHs/CreateNewAdmissionPost/',
+                        data: JSON.stringify(this.userData),
+                        contentType: 'application/json',
+                        dataType: 'JSON',
+                        success: function (response) {
+                            if (response.status) {
 
+                            } else {
 
-
+                            }
+                        }
+                    });
+                }
+            }
+        });
     </script>
 }
