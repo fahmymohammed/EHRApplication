@@ -8,11 +8,13 @@ namespace EHR.Database
         public States()
         {
             Doctor = new HashSet<Doctor>();
+            Patient = new HashSet<Patient>();
         }
 
         public int StateId { get; set; }
         public string StateName { get; set; }
 
         public virtual ICollection<Doctor> Doctor { get; set; }
+        public virtual ICollection<Patient> Patient { get; set; }
     }
 }

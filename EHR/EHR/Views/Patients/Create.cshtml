@@ -1,0 +1,91 @@
+﻿@model EHR.Database.Patient
+@{
+    ViewData["Title"] = "Create New Room";
+}
+
+<form asp-action="Create">
+    <div class="container border p-3 my-5" id="mainDiv" style="display:none">
+        <div class="mx-5">
+            <div class="row pt-4 col-12">
+                <h2 class="text-info pl-0">Add New Patient</h2>
+            </div>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group row col-4">
+                <label class="control-label">First Name</label>
+                <input asp-for="PatientFirstName" class="form-control" />
+                <span asp-validation-for="PatientFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Last Name</label>
+                <input asp-for="PatientLastName" class="form-control" />
+                <span asp-validation-for="PatientLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">DOB</label>
+                <input asp-for="PatientDob" class="form-control" />
+                <span asp-validation-for="PatientDob" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Gender</label>
+                <select asp-for="GenderId" class="form-control" asp-items="ViewBag.GenderId"></select>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Addresss</label>
+                <input asp-for="PatientAddresss" class="form-control" />
+                <span asp-validation-for="PatientAddresss" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">City</label>
+                <input asp-for="PatientCity" class="form-control" />
+                <span asp-validation-for="PatientCity" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Zip Code</label>
+                <input asp-for="PatientZipCode" class="form-control" />
+                <span asp-validation-for="PatientZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">SSN</label>
+                <input asp-for="Ssn" class="form-control" />
+                <span asp-validation-for="Ssn" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Mobile</label>
+                <input asp-for="PatientMobile" class="form-control" />
+                <span asp-validation-for="PatientMobile" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Email</label>
+                <input asp-for="PatientEmail" class="form-control" />
+                <span asp-validation-for="PatientEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">State</label>
+                <select asp-for="StateId" class="form-control" asp-items="ViewBag.StateId"></select>
+                <span asp-validation-for="StateId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row col-4">
+                <input type="submit" value="Create" class="btn btn-outline-primary mr-1" />
+                <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $("#mainDiv").fadeIn(1000);
+        });
+
+    </script>
+}

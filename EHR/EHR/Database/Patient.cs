@@ -20,10 +20,11 @@ namespace EHR.Database
         public int? PatientZipCode { get; set; }
         public int? StateId { get; set; }
         public int? Ssn { get; set; }
-        public int? PatientMobile { get; set; }
+        public string PatientMobile { get; set; }
         public string PatientEmail { get; set; }
 
         public virtual Gender Gender { get; set; }
+        public virtual States State { get; set; }
         public virtual ICollection<AdmissionH> AdmissionH { get; set; }
     }
 }

@@ -324,7 +324,9 @@ namespace EHR.Database
                     .HasColumnName("patientLastName")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.PatientMobile).HasColumnName("patientMobile");
+                entity.Property(e => e.PatientMobile)
+                    .HasColumnName("patientMobile")
+                    .HasMaxLength(13);
 
                 entity.Property(e => e.PatientZipCode).HasColumnName("patientZipCode");
 
@@ -337,6 +339,11 @@ namespace EHR.Database
                     .HasForeignKey(d => d.GenderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Patient_Gender");
+
+                entity.HasOne(d => d.State)
+                    .WithMany(p => p.Patient)
+                    .HasForeignKey(d => d.StateId)
+                    .HasConstraintName("FK_Patient_States");
             });
 
             modelBuilder.Entity<Room>(entity =>
