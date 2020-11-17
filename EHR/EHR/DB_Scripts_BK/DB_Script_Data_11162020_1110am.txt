@@ -1,6 +1,6 @@
 USE [EHR]
 GO
-/****** Object:  Table [dbo].[admissionD]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[admissionD]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[admissionD](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[admissionH]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[admissionH]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -32,7 +32,7 @@ CREATE TABLE [dbo].[admissionH](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Department]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[Department]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -46,7 +46,7 @@ CREATE TABLE [dbo].[Department](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Doctor]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[Doctor]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -69,7 +69,7 @@ CREATE TABLE [dbo].[Doctor](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Gender]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[Gender]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -83,7 +83,7 @@ CREATE TABLE [dbo].[Gender](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Medicine]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[Medicine]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -92,13 +92,15 @@ CREATE TABLE [dbo].[Medicine](
 	[medicineID] [int] IDENTITY(1,1) NOT NULL,
 	[medicineName] [nvarchar](50) NOT NULL,
 	[medicinePrice] [float] NOT NULL,
+	[medicineexpiredDate] [datetime] NOT NULL,
+	[medicineDoseNote] [nvarchar](1000) NOT NULL,
  CONSTRAINT [PK_Medicine] PRIMARY KEY CLUSTERED 
 (
 	[medicineID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Patient]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[Patient]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -122,7 +124,7 @@ CREATE TABLE [dbo].[Patient](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Room]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[Room]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -139,7 +141,7 @@ CREATE TABLE [dbo].[Room](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RoomType]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[RoomType]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -153,7 +155,7 @@ CREATE TABLE [dbo].[RoomType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[States]    Script Date: 11/16/2020 3:58:49 PM ******/
+/****** Object:  Table [dbo].[States]    Script Date: 11/16/2020 4:13:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -225,17 +227,17 @@ SET IDENTITY_INSERT [dbo].[Gender] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Medicine] ON 
 GO
-INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (1, N'Amitriptyline', 100)
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice], [medicineexpiredDate], [medicineDoseNote]) VALUES (1, N'Amitriptyline', 100, CAST(N'2030-01-01T00:00:00.000' AS DateTime), N'one per Hour')
 GO
-INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (2, N'Amlodipine', 50)
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice], [medicineexpiredDate], [medicineDoseNote]) VALUES (2, N'Amlodipine', 50, CAST(N'2030-01-01T00:00:00.000' AS DateTime), N'one per Hour')
 GO
-INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (3, N'Amoxicillin', 10)
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice], [medicineexpiredDate], [medicineDoseNote]) VALUES (3, N'Amoxicillin', 10, CAST(N'2030-01-01T00:00:00.000' AS DateTime), N'one per Hour')
 GO
-INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (4, N'Ativan', 100)
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice], [medicineexpiredDate], [medicineDoseNote]) VALUES (4, N'Ativan', 100, CAST(N'2030-01-01T00:00:00.000' AS DateTime), N'one per Hour')
 GO
-INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (5, N'Atorvastatin', 75.5)
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice], [medicineexpiredDate], [medicineDoseNote]) VALUES (5, N'Atorvastatin', 75.5, CAST(N'2030-01-01T00:00:00.000' AS DateTime), N'one per Hour')
 GO
-INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice]) VALUES (6, N'Azithromycin', 102.99)
+INSERT [dbo].[Medicine] ([medicineID], [medicineName], [medicinePrice], [medicineexpiredDate], [medicineDoseNote]) VALUES (6, N'Azithromycin', 102.99, CAST(N'2030-01-01T00:00:00.000' AS DateTime), N'one per Hour')
 GO
 SET IDENTITY_INSERT [dbo].[Medicine] OFF
 GO
@@ -247,7 +249,7 @@ SET IDENTITY_INSERT [dbo].[Patient] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Room] ON 
 GO
-INSERT [dbo].[Room] ([roomID], [roomNum], [totalBeds], [availableBeds], [roomTypeID]) VALUES (1, 100, 51, 51, 2)
+INSERT [dbo].[Room] ([roomID], [roomNum], [totalBeds], [availableBeds], [roomTypeID]) VALUES (1, 100, 51, 0, 4)
 GO
 INSERT [dbo].[Room] ([roomID], [roomNum], [totalBeds], [availableBeds], [roomTypeID]) VALUES (2, 207, 10, 2, 3)
 GO

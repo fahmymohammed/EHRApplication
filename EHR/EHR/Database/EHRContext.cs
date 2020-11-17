@@ -275,12 +275,21 @@ namespace EHR.Database
             {
                 entity.Property(e => e.MedicineId).HasColumnName("medicineID");
 
+                entity.Property(e => e.MedicineDoseNote)
+                    .IsRequired()
+                    .HasColumnName("medicineDoseNote")
+                    .HasMaxLength(1000);
+
                 entity.Property(e => e.MedicineName)
                     .IsRequired()
                     .HasColumnName("medicineName")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.MedicinePrice).HasColumnName("medicinePrice");
+
+                entity.Property(e => e.MedicineexpiredDate)
+                    .HasColumnName("medicineexpiredDate")
+                    .HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Patient>(entity =>
