@@ -25,9 +25,9 @@
 
 
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
+                    @*<li class="nav-item active">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>*@
 
 
 
@@ -47,61 +47,61 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Vendors
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="nav-link text-dark" asp-area="" asp-controller="VendorOrders" asp-action="Index">Vendors Orders List</a></li>
-                        </ul>
-                    </li>
+                    @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Vendors
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="VendorOrders" asp-action="Index">Vendors Orders List</a></li>
+                            </ul>
+                        </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Customers
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="nav-link text-dark" asp-area="" asp-controller="CustomerOrders" asp-action="Index">Customers Orders List</a></li>
-                        </ul>
-                    </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Customers
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="CustomerOrders" asp-action="Index">Customers Orders List</a></li>
+                            </ul>
+                        </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Reports
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Reports
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Vendors</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbyVendor">Vendors Report</a></li>
-                                </ul>
-                            </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Vendors</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbyVendor">Vendors Report</a></li>
+                                    </ul>
+                                </li>
 
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Customers</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbyVendor">Customers Report</a></li>
-                                </ul>
-                            </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Customers</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbyVendor">Customers Report</a></li>
+                                    </ul>
+                                </li>
 
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Categories</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbycategory">Categories Report</a></li>
-                                </ul>
-                            </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Categories</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbycategory">Categories Report</a></li>
+                                    </ul>
+                                </li>
 
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Products</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReport">Products Report</a></li>
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbycategory">Products by Categories Report</a></li>
-                                    <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbyVendor">Products by Vendors Report</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Products</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReport">Products Report</a></li>
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbycategory">Products by Categories Report</a></li>
+                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductsReportbyVendor">Products by Vendors Report</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>*@
 
                 </ul>
                 <div class="form-inline my-2 my-lg-0">

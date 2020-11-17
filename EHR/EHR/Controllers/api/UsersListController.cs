@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EHR.Controllers.api
@@ -27,8 +28,8 @@ namespace EHR.Controllers.api
         [HttpGet]
         public async Task<IActionResult> userlist()
         {
-            //JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
-            //var query = @"select firstName,lastname,CategoryID from AspNetUsers";
+            ////JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
+            //var query = @"select Stateid from States";
             //var dt = new DataTable();
             //using (var con = new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
             //using (var cmd = new SqlCommand(query, con))
@@ -39,8 +40,9 @@ namespace EHR.Controllers.api
 
             //}
 
-            var userlist = await _context.AspNetUsers.ToListAsync();
+            var userlist = await _context.States.Select(x => new { x.StateName }).ToListAsync();
             //return new JsonResult(dt, jsonSerializerSettings);
+            //return Ok(new { dt });
             return Ok(new { userlist });
         }
 

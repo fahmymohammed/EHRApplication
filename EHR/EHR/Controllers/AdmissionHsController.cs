@@ -1,4 +1,5 @@
 ﻿using EHR.Database;
+using EHR.Models.viewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -168,6 +169,53 @@ namespace EHR.Controllers
         private bool AdmissionHExists( int id )
         {
             return _context.AdmissionH.Any(e => e.AdmissionHid == id);
+        }
+
+
+        public ActionResult CreateNewAdmission()
+        {
+            ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
+            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
+            ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
+
+            return View();
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public JsonResult CreateNewAdmissionPost( [FromBody] admissionviewModel admissionviewmodel )
+        {
+            if (ModelState.IsValid)
+            {
+
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    var admissionH = new AdmissionH
+                    {
+                        PatientId = admissionviewmodel.PatientId,
+                        RoomId = admissionviewmodel.RoomId,
+                        DoctorId = admissionviewmodel.DoctorId,
+                        AdmissionDateTime = admissionviewmodel.AdmissionDateTime
+
+                    };
+                    _context.Add(admissionH);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+
+                    return Json(new { status = true, responseText = "successfuly" });
+                }
+
+            }
+
+            ModelState.AddModelError("", "error");
+            ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName", admissionviewmodel.DoctorId);
+            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", admissionviewmodel.PatientId);
+            ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum", admissionviewmodel.RoomId);
+
+            return Json(new { status = false, responseText = "Smething Went Wrong" });
+
         }
     }
 }
