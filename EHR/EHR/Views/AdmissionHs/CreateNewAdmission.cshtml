@@ -23,6 +23,11 @@
             <span asp-validation-for="AdmissionDateTime" class="text-danger"></span>
         </div>
         <div class="form-group row col-4">
+            <label class="control-label">Insurance</label>
+            <select asp-for="InsuranceId" class="form-control" asp-items="ViewBag.InsuranceId" id="InsuranceId"></select>
+            <span asp-validation-for="InsuranceId" class="text-danger"></span>
+        </div>
+        <div class="form-group row col-4">
             <label class="control-label">Doctor</label>
             <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.DoctorId" id="DoctorId"></select>
             <span asp-validation-for="DoctorId" class="text-danger"></span>
@@ -68,13 +73,9 @@
                 PatientId: $('#PatientId option:selected').val(),
                 RoomId: $('#RoomId option:selected').val(),
                 DoctorId: $('#DoctorId option:selected').val(),
-                AdmissionDateTime: $('#AdmissionDateTime').val()
+                AdmissionDateTime: $('#AdmissionDateTime').val(),
+                InsuranceId: $('#InsuranceId').val()
             }
-            console.log(mydata.PatientId);
-            console.log(mydata.RoomId);
-            console.log(mydata.DoctorId);
-            console.log(mydata.AdmissionDateTime);
-            console.log(mydata);
 
             $.ajax({
                 type: 'POST',

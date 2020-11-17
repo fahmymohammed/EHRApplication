@@ -27,6 +27,7 @@ namespace EHR.Database
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Doctor> Doctor { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
+        public virtual DbSet<Insurance> Insurance { get; set; }
         public virtual DbSet<Medicine> Medicine { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<PrescriptionD> PrescriptionD { get; set; }
@@ -71,7 +72,13 @@ namespace EHR.Database
                     .HasColumnName("admissionDateTime")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Discharge).HasColumnName("discharge");
+
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
+
+                entity.Property(e => e.InsuranceId)
+                    .HasColumnName("insuranceID")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.PatientId).HasColumnName("patientID");
 
@@ -82,6 +89,12 @@ namespace EHR.Database
                     .HasForeignKey(d => d.DoctorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_admissionH_Doctor");
+
+                entity.HasOne(d => d.Insurance)
+                    .WithMany(p => p.AdmissionH)
+                    .HasForeignKey(d => d.InsuranceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_admissionH_insurance");
 
                 entity.HasOne(d => d.Patient)
                     .WithMany(p => p.AdmissionH)
@@ -262,6 +275,18 @@ namespace EHR.Database
                 entity.Property(e => e.GenderName)
                     .IsRequired()
                     .HasColumnName("genderName")
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Insurance>(entity =>
+            {
+                entity.ToTable("insurance");
+
+                entity.Property(e => e.InsuranceId).HasColumnName("insuranceID");
+
+                entity.Property(e => e.InsuranceName)
+                    .IsRequired()
+                    .HasColumnName("insuranceName")
                     .HasMaxLength(50);
             });
 

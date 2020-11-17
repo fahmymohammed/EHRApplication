@@ -11,6 +11,7 @@
     <Compile Remove="Views\Departments\Backup\**" />
     <Compile Remove="Views\Doctors\Backup\**" />
     <Compile Remove="Views\Genders\Backup\**" />
+    <Compile Remove="Views\Insurances\Backup\**" />
     <Compile Remove="Views\Medicines\Backup\**" />
     <Compile Remove="Views\Patients\Backup\**" />
     <Compile Remove="Views\Rooms\Backup\**" />
@@ -19,6 +20,7 @@
     <Content Remove="Views\Departments\Backup\**" />
     <Content Remove="Views\Doctors\Backup\**" />
     <Content Remove="Views\Genders\Backup\**" />
+    <Content Remove="Views\Insurances\Backup\**" />
     <Content Remove="Views\Medicines\Backup\**" />
     <Content Remove="Views\Patients\Backup\**" />
     <Content Remove="Views\Rooms\Backup\**" />
@@ -27,6 +29,7 @@
     <EmbeddedResource Remove="Views\Departments\Backup\**" />
     <EmbeddedResource Remove="Views\Doctors\Backup\**" />
     <EmbeddedResource Remove="Views\Genders\Backup\**" />
+    <EmbeddedResource Remove="Views\Insurances\Backup\**" />
     <EmbeddedResource Remove="Views\Medicines\Backup\**" />
     <EmbeddedResource Remove="Views\Patients\Backup\**" />
     <EmbeddedResource Remove="Views\Rooms\Backup\**" />
@@ -35,6 +38,7 @@
     <None Remove="Views\Departments\Backup\**" />
     <None Remove="Views\Doctors\Backup\**" />
     <None Remove="Views\Genders\Backup\**" />
+    <None Remove="Views\Insurances\Backup\**" />
     <None Remove="Views\Medicines\Backup\**" />
     <None Remove="Views\Patients\Backup\**" />
     <None Remove="Views\Rooms\Backup\**" />
@@ -49,10 +53,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

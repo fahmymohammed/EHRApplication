@@ -1,0 +1,40 @@
+﻿@model EHR.Database.Insurance
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form asp-action="Edit">
+    <div class="container border p-3 my-5" id="mainDiv" style="display:none">
+        <div class="mx-5">
+            <div class="col-12 row pt-4">
+                <h2>Edit <strong class="text-info">@Model.InsuranceName</strong></h2>
+            </div>
+            <hr />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="InsuranceId" />
+            <div class="form-group row col-4">
+                <label class="control-label">Insurance Name</label>
+                <input asp-for="InsuranceName" class="form-control" />
+                <span asp-validation-for="InsuranceName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row col-4">
+                <input type="submit" value="Update" class="btn btn-outline-primary mr-1" />
+                <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#mainDiv").fadeIn(1000);
+        });
+
+    </script>
+}

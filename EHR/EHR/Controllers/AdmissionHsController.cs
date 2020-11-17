@@ -20,7 +20,7 @@ namespace EHR.Controllers
         // GET: AdmissionHs
         public async Task<IActionResult> Index()
         {
-            var eHRContext = _context.AdmissionH.Include(a => a.Doctor).Include(a => a.Patient).Include(a => a.Room);
+            var eHRContext = _context.AdmissionH.Include(a => a.Doctor).Include(a => a.Patient).Include(a => a.Room).Include(a => a.Insurance);
             return View(await eHRContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace EHR.Controllers
                 .Include(a => a.Doctor)
                 .Include(a => a.Patient)
                 .Include(a => a.Room)
+                .Include(a => a.Insurance)
                 .FirstOrDefaultAsync(m => m.AdmissionHid == id);
             if (admissionH == null)
             {
@@ -52,6 +53,7 @@ namespace EHR.Controllers
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
             //ViewData["PatientId"] = new SelectList(_context.Patient, "PatientId", "PatientFirstName");
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
             return View();
         }
 
@@ -60,7 +62,7 @@ namespace EHR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( [Bind("AdmissionHid,AdmissionDateTime,PatientId,RoomId,DoctorId")] AdmissionH admissionH )
+        public async Task<IActionResult> Create( [Bind("AdmissionHid,AdmissionDateTime,PatientId,RoomId,DoctorId,InsuranceId")] AdmissionH admissionH )
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +74,7 @@ namespace EHR.Controllers
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", admissionH.PatientId);
             //ViewData["PatientId"] = new SelectList(_context.Patient, "PatientId", "PatientFirstName", admissionH.PatientId);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum", admissionH.RoomId);
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName", admissionH.InsuranceId);
             return View(admissionH);
         }
 
@@ -92,6 +95,7 @@ namespace EHR.Controllers
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
             //ViewData["PatientId"] = new SelectList(_context.Patient, "PatientId", "PatientFirstName", admissionH.PatientId);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum", admissionH.RoomId);
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName", admissionH.InsuranceId);
             return View(admissionH);
         }
 
@@ -100,7 +104,7 @@ namespace EHR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( int id, [Bind("AdmissionHid,AdmissionDateTime,PatientId,RoomId,DoctorId")] AdmissionH admissionH )
+        public async Task<IActionResult> Edit( int id, [Bind("AdmissionHid,AdmissionDateTime,PatientId,RoomId,DoctorId,InsuranceId")] AdmissionH admissionH )
         {
             if (id != admissionH.AdmissionHid)
             {
@@ -131,6 +135,7 @@ namespace EHR.Controllers
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", admissionH.PatientId);
             //ViewData["PatientId"] = new SelectList(_context.Patient, "PatientId", "PatientFirstName", admissionH.PatientId);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum", admissionH.RoomId);
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName", admissionH.InsuranceId);
             return View(admissionH);
         }
 
@@ -146,6 +151,7 @@ namespace EHR.Controllers
                 .Include(a => a.Doctor)
                 .Include(a => a.Patient)
                 .Include(a => a.Room)
+                .Include(a => a.Insurance)
                 .FirstOrDefaultAsync(m => m.AdmissionHid == id);
             if (admissionH == null)
             {
@@ -177,6 +183,7 @@ namespace EHR.Controllers
             ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
 
             return View();
         }
@@ -185,6 +192,7 @@ namespace EHR.Controllers
             ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
 
             return View();
         }
@@ -203,7 +211,10 @@ namespace EHR.Controllers
                         PatientId = admissionviewmodel.PatientId,
                         RoomId = admissionviewmodel.RoomId,
                         DoctorId = admissionviewmodel.DoctorId,
-                        AdmissionDateTime = admissionviewmodel.AdmissionDateTime
+                        AdmissionDateTime = admissionviewmodel.AdmissionDateTime,
+                        InsuranceId = admissionviewmodel.InsuranceId,
+                        Discharge = false
+
 
                     };
                     _context.Add(admissionH);
@@ -221,6 +232,7 @@ namespace EHR.Controllers
             ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName", admissionviewmodel.DoctorId);
             ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", admissionviewmodel.PatientId);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum", admissionviewmodel.RoomId);
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName", admissionviewmodel.InsuranceId);
 
             return Json(new { status = false, responseText = "Smething Went Wrong" });
 

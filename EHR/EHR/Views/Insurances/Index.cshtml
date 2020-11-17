@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EHR.Database.AdmissionH>
+﻿@model IEnumerable<EHR.Database.Insurance>
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,12 +9,12 @@
 
         <div class="row pt-4">
             <div class="col-6">
-                <h2 class="text-primary">Admissions List</h2>
+                <h2 class="text-primary">Insurances List</h2>
             </div>
             <div class="col-6 text-right">
                 @if (Model.Count() > 0)
                 {
-                    <a asp-action="CreateNewAdmission" class="btn btn-outline-dark"><i class="fas fa-plus-square" style="font-size:20px"></i></a>
+                    <a asp-action="Create" class="btn btn-outline-dark"><i class="fas fa-plus-square" style="font-size:20px"></i></a>
                 }
                 else
                 {
@@ -32,11 +32,7 @@
             <table id="TableDataFetch" class="table table-bordered table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Patient</th>
-                        <th>Date</th>
-                        <th>Insurance</th>
-                        <th>Doctor</th>
-                        <th>Room</th>
+                        <th>Gender Name</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -44,27 +40,15 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td style="width:20%">
-                                @item.Patient.PatientFirstName @item.Patient.PatientLastName
-                            </td>
-                            <td style="width:20%">
-                                @item.AdmissionDateTime
-                            </td>
-                            <td style="width:20%">
-                                @item.Insurance.InsuranceName
-                            </td>
-                            <td style="width:20%">
-                                @item.Doctor.DoctorFirstName @item.Doctor.DoctorLastName
-                            </td>
-                            <td style="width:13%">
-                                @item.Room.RoomNum
+                            <td style="width:80%">
+                                @item.InsuranceName
                             </td>
                             <td>
                                 <div class="text-center">
                                     <div class="btn-group">
-                                        <a asp-action="Edit" asp-route-id="@item.AdmissionHid" class="btn btn-outline-primary w-25 mx-1"><i class="fas fa-edit" style="font-size:20px"></i></a>
-                                        <a asp-action="Details" asp-route-id="@item.AdmissionHid" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-info-circle" style="font-size:20px"></i></a>
-                                        <a asp-action="Delete" asp-route-id="@item.AdmissionHid" class="btn btn-outline-danger w-25 mx-1"><i class="fas fa-trash-alt" style="font-size:20px"></i></a>
+                                        <a asp-action="Edit" asp-route-id="@item.InsuranceId" class="btn btn-outline-primary w-25 mx-1"><i class="fas fa-edit" style="font-size:20px"></i></a>
+                                        <a asp-action="Details" asp-route-id="@item.InsuranceId" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-info-circle" style="font-size:20px"></i></a>
+                                        <a asp-action="Delete" asp-route-id="@item.InsuranceId" class="btn btn-outline-danger w-25 mx-1"><i class="fas fa-trash-alt" style="font-size:20px"></i></a>
                                     </div>
                                 </div>
 
@@ -74,11 +58,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Patient</th>
-                        <th>Date</th>
-                        <th>Insurance</th>
-                        <th>Doctor</th>
-                        <th>Room</th>
+                        <th>Gender Name</th>
                         <th></th>
                     </tr>
                 </tfoot>
