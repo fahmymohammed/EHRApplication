@@ -1,0 +1,86 @@
+﻿@model EHR.Database.Doctor
+@{
+    ViewData["Title"] = "Create New Room";
+}
+
+<form asp-action="Create">
+    <div class="container border p-3 my-5" id="mainDiv" style="display:none">
+        <div class="mx-5">
+            <div class="row pt-4 col-12">
+                <h2 class="text-info pl-0">Add New Doctor</h2>
+            </div>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group row col-4">
+                <label class="control-label">First Name</label>
+                <input asp-for="DoctorFirstName" class="form-control" />
+                <span asp-validation-for="DoctorFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Last Name</label>
+                <input asp-for="DoctorLastName" class="form-control" />
+                <span asp-validation-for="DoctorLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Addresss</label>
+                <input asp-for="DoctorAddresss" class="form-control" />
+                <span asp-validation-for="DoctorAddresss" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">City</label>
+                <input asp-for="DoctorCity" class="form-control" />
+                <span asp-validation-for="DoctorCity" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Zip Code</label>
+                <input asp-for="DoctorZipCode" class="form-control" />
+                <span asp-validation-for="DoctorZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">SSN</label>
+                <input asp-for="Ssn" class="form-control" />
+                <span asp-validation-for="Ssn" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Mobile</label>
+                <input asp-for="DoctorMobile" class="form-control" />
+                <span asp-validation-for="DoctorMobile" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Email</label>
+                <input asp-for="DoctorEmail" class="form-control" />
+                <span asp-validation-for="DoctorEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">State</label>
+                <select asp-for="StateId" class="form-control" asp-items="ViewBag.StateId"></select>
+                <span asp-validation-for="StateId" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Department</label>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row col-4">
+                <input type="submit" value="Create" class="btn btn-outline-primary mr-1" />
+                <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $("#mainDiv").fadeIn(1000);
+        });
+
+    </script>
+}

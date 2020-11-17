@@ -13,7 +13,7 @@ namespace EHR.Database
         public int RoomId { get; set; }
         public int RoomNum { get; set; }
         public int TotalBeds { get; set; }
-        public int AvailBeds { get; set; }
+        public int AvailableBeds { get; set; }
         public int RoomTypeId { get; set; }
 
         public virtual RoomType RoomType { get; set; }

@@ -24,13 +24,14 @@ namespace EHR.Database
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Doctor> Doctor { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
         public virtual DbSet<Medicine> Medicine { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomType> RoomType { get; set; }
+        public virtual DbSet<States> States { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -213,11 +214,11 @@ namespace EHR.Database
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
-            modelBuilder.Entity<Category>(entity =>
+            modelBuilder.Entity<Department>(entity =>
             {
-                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+                entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.CategoryName)
+                entity.Property(e => e.DepartmentName)
                     .IsRequired()
                     .HasMaxLength(100);
             });
@@ -226,7 +227,13 @@ namespace EHR.Database
             {
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
 
-                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+                entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
+
+                entity.Property(e => e.DoctorAddresss).HasMaxLength(50);
+
+                entity.Property(e => e.DoctorCity).HasMaxLength(15);
+
+                entity.Property(e => e.DoctorEmail).HasMaxLength(50);
 
                 entity.Property(e => e.DoctorFirstName)
                     .IsRequired()
@@ -236,11 +243,22 @@ namespace EHR.Database
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.Category)
+                entity.Property(e => e.DoctorMobile).HasMaxLength(13);
+
+                entity.Property(e => e.Ssn).HasColumnName("SSN");
+
+                entity.Property(e => e.StateId).HasColumnName("stateID");
+
+                entity.HasOne(d => d.Department)
                     .WithMany(p => p.Doctor)
-                    .HasForeignKey(d => d.CategoryId)
+                    .HasForeignKey(d => d.DepartmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Doctor_Category");
+                    .HasConstraintName("FK_Doctor_Department");
+
+                entity.HasOne(d => d.State)
+                    .WithMany(p => p.Doctor)
+                    .HasForeignKey(d => d.StateId)
+                    .HasConstraintName("FK_Doctor_States");
             });
 
             modelBuilder.Entity<Gender>(entity =>
@@ -299,13 +317,11 @@ namespace EHR.Database
 
                 entity.Property(e => e.PatientMobile).HasColumnName("patientMobile");
 
-                entity.Property(e => e.PatientState)
-                    .HasColumnName("patientState")
-                    .HasMaxLength(15);
-
                 entity.Property(e => e.PatientZipCode).HasColumnName("patientZipCode");
 
                 entity.Property(e => e.Ssn).HasColumnName("SSN");
+
+                entity.Property(e => e.StateId).HasColumnName("stateID");
 
                 entity.HasOne(d => d.Gender)
                     .WithMany(p => p.Patient)
@@ -318,7 +334,7 @@ namespace EHR.Database
             {
                 entity.Property(e => e.RoomId).HasColumnName("roomID");
 
-                entity.Property(e => e.AvailBeds).HasColumnName("availBeds");
+                entity.Property(e => e.AvailableBeds).HasColumnName("availableBeds");
 
                 entity.Property(e => e.RoomNum).HasColumnName("roomNum");
 
@@ -340,6 +356,18 @@ namespace EHR.Database
                 entity.Property(e => e.RoomTypeName)
                     .IsRequired()
                     .HasColumnName("roomTypeName")
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<States>(entity =>
+            {
+                entity.HasKey(e => e.StateId);
+
+                entity.Property(e => e.StateId).HasColumnName("stateID");
+
+                entity.Property(e => e.StateName)
+                    .IsRequired()
+                    .HasColumnName("stateName")
                     .HasMaxLength(50);
             });
 

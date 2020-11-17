@@ -18,7 +18,7 @@ namespace EHR.Database
         public string PatientAddresss { get; set; }
         public string PatientCity { get; set; }
         public int? PatientZipCode { get; set; }
-        public string PatientState { get; set; }
+        public int? StateId { get; set; }
         public int? Ssn { get; set; }
         public int? PatientMobile { get; set; }
         public string PatientEmail { get; set; }

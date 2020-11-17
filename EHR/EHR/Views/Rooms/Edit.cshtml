@@ -1,0 +1,55 @@
+﻿@model EHR.Database.Room
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form asp-action="Edit">
+    <div class="container border p-3 my-5" id="mainDiv" style="display:none">
+        <div class="mx-5">
+            <div class="col-12 row pt-4">
+                <h2>Edit <strong class="text-info">@Model.RoomNum</strong></h2>
+            </div>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoomId" />
+
+            <div class="form-group row col-4">
+                <label class="control-label">Room Number</label>
+                <input asp-for="RoomNum" class="form-control" />
+                <span asp-validation-for="RoomNum" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Total Beds</label>
+                <input asp-for="TotalBeds" class="form-control" />
+                <span asp-validation-for="TotalBeds" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Available Beds</label>
+                <input asp-for="AvailableBeds" class="form-control" disabled />
+                <span asp-validation-for="AvailableBeds" class="text-danger"></span>
+            </div>
+            <div class="form-group row col-4">
+                <label class="control-label">Room Type</label>
+                <select asp-for="RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypeId"></select>
+                <span asp-validation-for="RoomTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row col-4">
+                <input type="submit" value="Update" class="btn btn-outline-primary mr-1" />
+                <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#mainDiv").fadeIn(1000);
+        });
+
+    </script>
+}

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<EHR.Database.Department>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div id="mainDiv" class="container p-3 border my-5" style="display:none;font-size:12px">
+
+    <div class="mx-5">
+
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">Departments List</h2>
+            </div>
+            <div class="col-6 text-right">
+                @if (Model.Count() > 0)
+                {
+                    <a asp-action="Create" class="btn btn-outline-dark"><i class="fas fa-plus-square" style="font-size:20px"></i></a>
+                }
+                else
+                {
+                    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus-square" style="font-size:20px"></i></a>
+                }
+
+
+            </div>
+        </div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+
+
+            <table id="TableDataFetch" class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Department Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="width:80%">
+                                @item.DepartmentName
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.DepartmentId" class="btn btn-outline-primary w-25 mx-1"><i class="fas fa-edit" style="font-size:20px"></i></a>
+                                        <a asp-action="Details" asp-route-id="@item.DepartmentId" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-info-circle" style="font-size:20px"></i></a>
+                                        <a asp-action="Delete" asp-route-id="@item.DepartmentId" class="btn btn-outline-danger w-25 mx-1"><i class="fas fa-trash-alt" style="font-size:20px"></i></a>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Departments Name</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <h3 class="text-danger text-center text-lg-center">NO DATA EXISTS</h3>
+        }
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#TableDataFetch').DataTable();
+            $("#mainDiv").fadeIn(1000);
+
+            $("td").click(function () {
+                $('.selected').removeClass('selected');
+                $(this).parents('tr').addClass('selected');
+            });
+
+            $('tr').mouseover(function () {
+                $('tr').css('cursor', 'pointer');
+            });
+
+            //$("td").dblclick(function () {
+            //    window.print()
+            //});
+
+
+        });
+
+
+
+    </script>
+}
