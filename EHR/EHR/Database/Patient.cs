@@ -8,6 +8,7 @@ namespace EHR.Database
         public Patient()
         {
             AdmissionH = new HashSet<AdmissionH>();
+            Bill = new HashSet<Bill>();
             PrescriptionH = new HashSet<PrescriptionH>();
         }
 
@@ -27,6 +28,7 @@ namespace EHR.Database
         public virtual Gender Gender { get; set; }
         public virtual States State { get; set; }
         public virtual ICollection<AdmissionH> AdmissionH { get; set; }
+        public virtual ICollection<Bill> Bill { get; set; }
         public virtual ICollection<PrescriptionH> PrescriptionH { get; set; }
     }
 }

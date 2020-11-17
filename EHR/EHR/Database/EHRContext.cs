@@ -24,6 +24,7 @@ namespace EHR.Database
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Bill> Bill { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Doctor> Doctor { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
@@ -35,6 +36,7 @@ namespace EHR.Database
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomType> RoomType { get; set; }
         public virtual DbSet<States> States { get; set; }
+        public virtual DbSet<Visit> Visit { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -221,6 +223,19 @@ namespace EHR.Database
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
+            modelBuilder.Entity<Bill>(entity =>
+            {
+                entity.Property(e => e.BillId).HasColumnName("BillID");
+
+                entity.Property(e => e.PatientId).HasColumnName("patientID");
+
+                entity.HasOne(d => d.Patient)
+                    .WithMany(p => p.Bill)
+                    .HasForeignKey(d => d.PatientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Bill_Patient");
+            });
+
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
@@ -398,25 +413,25 @@ namespace EHR.Database
 
                 entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
 
-                entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
-
                 entity.Property(e => e.PatientId).HasColumnName("patientID");
 
                 entity.Property(e => e.PrescriptionHdate)
                     .HasColumnName("prescriptionHDate")
                     .HasColumnType("datetime");
 
-                entity.HasOne(d => d.Doctor)
-                    .WithMany(p => p.PrescriptionH)
-                    .HasForeignKey(d => d.DoctorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_prescriptionH_Doctor");
+                entity.Property(e => e.VisitId).HasColumnName("VisitID");
 
                 entity.HasOne(d => d.Patient)
                     .WithMany(p => p.PrescriptionH)
                     .HasForeignKey(d => d.PatientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_prescriptionH_Patient");
+
+                entity.HasOne(d => d.Visit)
+                    .WithMany(p => p.PrescriptionH)
+                    .HasForeignKey(d => d.VisitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_prescriptionH_Visit");
             });
 
             modelBuilder.Entity<Room>(entity =>
@@ -458,6 +473,21 @@ namespace EHR.Database
                     .IsRequired()
                     .HasColumnName("stateName")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Visit>(entity =>
+            {
+                entity.Property(e => e.VisitId).HasColumnName("VisitID");
+
+                entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
+
+                entity.Property(e => e.VisitDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Doctor)
+                    .WithMany(p => p.Visit)
+                    .HasForeignKey(d => d.DoctorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Visit_Doctor");
             });
 
             OnModelCreatingPartial(modelBuilder);
