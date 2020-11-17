@@ -29,6 +29,8 @@ namespace EHR.Database
         public virtual DbSet<Gender> Gender { get; set; }
         public virtual DbSet<Medicine> Medicine { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
+        public virtual DbSet<PrescriptionD> PrescriptionD { get; set; }
+        public virtual DbSet<PrescriptionH> PrescriptionH { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomType> RoomType { get; set; }
         public virtual DbSet<States> States { get; set; }
@@ -52,19 +54,11 @@ namespace EHR.Database
 
                 entity.Property(e => e.AdmissionHid).HasColumnName("admissionHID");
 
-                entity.Property(e => e.MedicineId).HasColumnName("medicineID");
-
                 entity.HasOne(d => d.AdmissionH)
                     .WithMany(p => p.AdmissionD)
                     .HasForeignKey(d => d.AdmissionHid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_admissionD_admissionH");
-
-                entity.HasOne(d => d.Medicine)
-                    .WithMany(p => p.AdmissionD)
-                    .HasForeignKey(d => d.MedicineId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_admissionD_Medicine");
             });
 
             modelBuilder.Entity<AdmissionH>(entity =>
@@ -344,6 +338,60 @@ namespace EHR.Database
                     .WithMany(p => p.Patient)
                     .HasForeignKey(d => d.StateId)
                     .HasConstraintName("FK_Patient_States");
+            });
+
+            modelBuilder.Entity<PrescriptionD>(entity =>
+            {
+                entity.ToTable("prescriptionD");
+
+                entity.Property(e => e.PrescriptionDid).HasColumnName("prescriptionDID");
+
+                entity.Property(e => e.Cost).HasColumnName("cost");
+
+                entity.Property(e => e.MedicineId).HasColumnName("medicineID");
+
+                entity.Property(e => e.Note).HasMaxLength(500);
+
+                entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
+
+                entity.HasOne(d => d.Medicine)
+                    .WithMany(p => p.PrescriptionD)
+                    .HasForeignKey(d => d.MedicineId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_prescriptionD_Medicine");
+
+                entity.HasOne(d => d.PrescriptionH)
+                    .WithMany(p => p.PrescriptionD)
+                    .HasForeignKey(d => d.PrescriptionHid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_prescriptionD_prescriptionH");
+            });
+
+            modelBuilder.Entity<PrescriptionH>(entity =>
+            {
+                entity.ToTable("prescriptionH");
+
+                entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
+
+                entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
+
+                entity.Property(e => e.PatientId).HasColumnName("patientID");
+
+                entity.Property(e => e.PrescriptionHdate)
+                    .HasColumnName("prescriptionHDate")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.Doctor)
+                    .WithMany(p => p.PrescriptionH)
+                    .HasForeignKey(d => d.DoctorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_prescriptionH_Doctor");
+
+                entity.HasOne(d => d.Patient)
+                    .WithMany(p => p.PrescriptionH)
+                    .HasForeignKey(d => d.PatientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_prescriptionH_Patient");
             });
 
             modelBuilder.Entity<Room>(entity =>

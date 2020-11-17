@@ -8,6 +8,7 @@ namespace EHR.Database
         public Doctor()
         {
             AdmissionH = new HashSet<AdmissionH>();
+            PrescriptionH = new HashSet<PrescriptionH>();
         }
 
         public int DoctorId { get; set; }
@@ -25,5 +26,6 @@ namespace EHR.Database
         public virtual Department Department { get; set; }
         public virtual States State { get; set; }
         public virtual ICollection<AdmissionH> AdmissionH { get; set; }
+        public virtual ICollection<PrescriptionH> PrescriptionH { get; set; }
     }
 }
