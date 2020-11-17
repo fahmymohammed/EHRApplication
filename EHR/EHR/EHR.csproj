@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\AdmissionHs\Backup\**" />
     <Compile Remove="Views\Departments\Backup\**" />
     <Compile Remove="Views\Doctors\Backup\**" />
     <Compile Remove="Views\Genders\Backup\**" />
@@ -14,6 +15,7 @@
     <Compile Remove="Views\Patients\Backup\**" />
     <Compile Remove="Views\Rooms\Backup\**" />
     <Compile Remove="Views\RoomTypes\Backups\**" />
+    <Content Remove="Views\AdmissionHs\Backup\**" />
     <Content Remove="Views\Departments\Backup\**" />
     <Content Remove="Views\Doctors\Backup\**" />
     <Content Remove="Views\Genders\Backup\**" />
@@ -21,6 +23,7 @@
     <Content Remove="Views\Patients\Backup\**" />
     <Content Remove="Views\Rooms\Backup\**" />
     <Content Remove="Views\RoomTypes\Backups\**" />
+    <EmbeddedResource Remove="Views\AdmissionHs\Backup\**" />
     <EmbeddedResource Remove="Views\Departments\Backup\**" />
     <EmbeddedResource Remove="Views\Doctors\Backup\**" />
     <EmbeddedResource Remove="Views\Genders\Backup\**" />
@@ -28,6 +31,7 @@
     <EmbeddedResource Remove="Views\Patients\Backup\**" />
     <EmbeddedResource Remove="Views\Rooms\Backup\**" />
     <EmbeddedResource Remove="Views\RoomTypes\Backups\**" />
+    <None Remove="Views\AdmissionHs\Backup\**" />
     <None Remove="Views\Departments\Backup\**" />
     <None Remove="Views\Doctors\Backup\**" />
     <None Remove="Views\Genders\Backup\**" />
