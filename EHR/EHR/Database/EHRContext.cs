@@ -332,6 +332,8 @@ namespace EHR.Database
 
                 entity.Property(e => e.GenderId).HasColumnName("genderID");
 
+                entity.Property(e => e.IsAdmissioned).HasColumnName("isAdmissioned");
+
                 entity.Property(e => e.PatientAddresss)
                     .HasColumnName("patientAddresss")
                     .HasMaxLength(50);
@@ -413,19 +415,11 @@ namespace EHR.Database
 
                 entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
 
-                entity.Property(e => e.PatientId).HasColumnName("patientID");
-
                 entity.Property(e => e.PrescriptionHdate)
                     .HasColumnName("prescriptionHDate")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.VisitId).HasColumnName("VisitID");
-
-                entity.HasOne(d => d.Patient)
-                    .WithMany(p => p.PrescriptionH)
-                    .HasForeignKey(d => d.PatientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_prescriptionH_Patient");
 
                 entity.HasOne(d => d.Visit)
                     .WithMany(p => p.PrescriptionH)
@@ -481,6 +475,8 @@ namespace EHR.Database
 
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
 
+                entity.Property(e => e.PatientId).HasColumnName("patientID");
+
                 entity.Property(e => e.VisitDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Doctor)
@@ -488,6 +484,12 @@ namespace EHR.Database
                     .HasForeignKey(d => d.DoctorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Visit_Doctor");
+
+                entity.HasOne(d => d.Patient)
+                    .WithMany(p => p.Visit)
+                    .HasForeignKey(d => d.PatientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Visit_Patient");
             });
 
             OnModelCreatingPartial(modelBuilder);

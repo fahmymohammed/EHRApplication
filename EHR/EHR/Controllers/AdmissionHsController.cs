@@ -181,12 +181,13 @@ namespace EHR.Controllers
         public ActionResult CreateNewAdmission()
         {
             ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
-            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
+            ViewData["PatientId"] = new SelectList((from s in _context.Patient.Where(x => x.IsAdmissioned == false) select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
             ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
 
             return View();
         }
+
         public ActionResult CreateNewAdmissionVue()
         {
             ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
@@ -197,9 +198,9 @@ namespace EHR.Controllers
             return View();
         }
 
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public JsonResult CreateNewAdmissionPost( [FromBody] admissionviewModel admissionviewmodel )
+
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateNewAdmissionPost( [FromForm] admissionviewModel admissionviewmodel )
         {
             if (ModelState.IsValid)
             {
@@ -220,10 +221,16 @@ namespace EHR.Controllers
                     _context.Add(admissionH);
                     _context.SaveChanges();
 
+                    var PatientInfo = _context.Patient.Where(x => x.PatientId == admissionH.PatientId).FirstOrDefault();
+                    PatientInfo.IsAdmissioned = true;
+
+                    _context.Update(PatientInfo);
+                    _context.SaveChanges();
+
                     transaction.Commit();
 
+                    return Json(new { status = true, responseText = "successfully", returnAdmissionHid = admissionH.PatientId });
 
-                    return Json(new { status = true, responseText = "successfuly" });
                 }
 
             }
@@ -235,6 +242,55 @@ namespace EHR.Controllers
             ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName", admissionviewmodel.InsuranceId);
 
             return Json(new { status = false, responseText = "Smething Went Wrong" });
+
+        }
+
+
+        [HttpGet]
+        public ActionResult PatientFollowUp( int id )
+        {
+
+            var Patient = _context.Patient.Include(x => x.AdmissionH).Where(x => x.PatientId == id).Include(x => x.Visit).FirstOrDefault();
+            var PatientAdmissionH = _context.AdmissionH.Where(x => x.PatientId == Patient.PatientId).Include(x => x.Doctor).Include(x => x.Room).Include(x => x.Insurance).FirstOrDefault();
+            var PatientVisit = _context.Visit.Where(x => x.PatientId == Patient.PatientId).Include(x => x.Doctor).Include(x => x.PrescriptionH).ToList();
+
+
+            //var Patient = _context.AdmissionH
+            //    .Include(a => a.Doctor)
+            //    .Include(b => b.Room)
+            //    .Include(c => c.Patient)
+            //    .Include(x => x.Insurance)
+            //    .Include(x => x.Patient.Visit)
+            //    .Include(x => x.Doctor.Visit)
+            //    .Where(f => f.AdmissionHid == id)
+            //    .FirstOrDefault();
+
+
+            var admissionFullviewModel = new admissionFullviewModel();
+            admissionFullviewModel.AdmissionHid = id;
+            admissionFullviewModel.AdmissionDateTime = PatientAdmissionH.AdmissionDateTime;
+            admissionFullviewModel.PatientId = Patient.PatientId;
+            admissionFullviewModel.RoomId = PatientAdmissionH.RoomId;
+            admissionFullviewModel.DoctorId = PatientAdmissionH.DoctorId;
+            admissionFullviewModel.Discharge = PatientAdmissionH.Discharge;
+            admissionFullviewModel.InsuranceId = PatientAdmissionH.InsuranceId;
+            admissionFullviewModel.PatientFirstName = Patient.PatientFirstName;
+            admissionFullviewModel.PatientLastName = Patient.PatientLastName;
+            admissionFullviewModel.DoctorFirstName = PatientAdmissionH.Doctor.DoctorFirstName;
+            admissionFullviewModel.DoctorLastName = PatientAdmissionH.Doctor.DoctorLastName;
+            admissionFullviewModel.RoomNum = PatientAdmissionH.Room.RoomNum;
+            admissionFullviewModel.InsuranceName = PatientAdmissionH.Insurance.InsuranceName;
+            admissionFullviewModel.visits = PatientVisit;
+
+
+
+            ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
+            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
+            ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
+            ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
+            ViewData["MedicineId"] = new SelectList(_context.Medicine, "MedicineId", "InsuranceName");
+
+            return View(admissionFullviewModel);
 
         }
     }

@@ -1,0 +1,140 @@
+﻿@model EHR.Models.viewModel.admissionFullviewModel
+@{
+    ViewData["Title"] = "Create New Room";
+}
+
+<form id="mainForm">
+    <div class="container border p-3 my-5" id="mainDiv" style="display:none">
+        <div class="mx-5">
+            <div class="row pt-4 col-12">
+                <h2 class="text-info pl-0">Patient FollowUp</h2>
+            </div>
+            <hr />
+            <div class="row pt-4 col-12">
+                <h5 class="text-primary pl-0">Patient Info</h5>
+            </div>
+            <table class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Date</th>
+                        <th>Insurance</th>
+                        <th>Doctor</th>
+                        <th>Room</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width:20%">
+                            @Html.DisplayFor(model => model.PatientFirstName) @Html.DisplayFor(model => model.PatientLastName)
+                        </td>
+                        <td style="width:20%">
+                            @Html.DisplayFor(model => model.AdmissionDateTime)
+                        </td>
+                        <td style="width:20%">
+                            @Html.DisplayFor(model => model.InsuranceName)
+                        </td>
+                        <td style="width:20%">
+                            @Html.DisplayFor(model => model.DoctorFirstName) @Html.DisplayFor(model => model.DoctorLastName)
+                        </td>
+                        <td style="width:13%">
+                            @Html.DisplayFor(model => model.RoomNum)
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+
+            <div class="form-group row pt-4 col-12">
+                <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
+                <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
+                <button type="button" class="btn btn-outline-primary mr-4" id="submit">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
+                <button type="button" class="btn btn-dark mr-4" id="submit">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
+                <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+            </div>
+            <br />
+            <div class="row pt-4 col-12">
+                <h5 class="text-primary pl-0">Visits Info</h5>
+            </div>
+            @if (Model.visits.Count() > 0)
+            {
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Doctor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.visits)
+                        {
+                            <tr>
+                                <td style="width:20%">
+                                    @Html.DisplayFor(model => item.VisitDate)
+                                </td>
+                                <td style="width:80%">
+                                    @Html.DisplayFor(model => item.Doctor.DoctorFirstName) @Html.DisplayFor(model => item.Doctor.DoctorLastName)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            }
+            else
+            {
+                <h3 class="text-danger text-center text-lg-center">NO DATA EXISTS</h3>
+            }
+
+        </div>
+    </div>
+</form>
+
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $("#AdmissionDateTime").datepicker({
+                dateFormat: "mm/dd/yy",
+                isRTL: true,
+                duration: "slow",
+                firstDay: 1,
+                showOn: "focus"
+            }).datepicker("setDate", "0");
+
+            $("#mainDiv").fadeIn(1000);
+
+        });
+
+        $('#submit').click(function () {
+            var mydata = {
+                PatientId: $('#PatientId option:selected').val(),
+                RoomId: $('#RoomId option:selected').val(),
+                DoctorId: $('#DoctorId option:selected').val(),
+                AdmissionDateTime: $('#AdmissionDateTime').val(),
+                InsuranceId: $('#InsuranceId').val()
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/AdmissionHs/CreateNewAdmissionPost/',
+                data: JSON.stringify(mydata),
+                contentType: 'application/json',
+                dataType: 'JSON',
+                success: function (response) {
+                    if (response.status) {
+
+                    } else {
+
+                    }
+                }
+            });
+        })
+
+    </script>
+}

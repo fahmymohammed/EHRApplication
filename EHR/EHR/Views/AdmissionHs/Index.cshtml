@@ -18,7 +18,7 @@
                 }
                 else
                 {
-                    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus-square" style="font-size:20px"></i></a>
+                    <a asp-action="CreateNewAdmission" class="btn btn-primary"><i class="fas fa-plus-square" style="font-size:20px"></i></a>
                 }
 
 
@@ -65,6 +65,7 @@
                                         <a asp-action="Edit" asp-route-id="@item.AdmissionHid" class="btn btn-outline-primary w-25 mx-1"><i class="fas fa-edit" style="font-size:20px"></i></a>
                                         <a asp-action="Details" asp-route-id="@item.AdmissionHid" class="btn btn-outline-info w-25 mx-1"><i class="fas fa-info-circle" style="font-size:20px"></i></a>
                                         <a asp-action="Delete" asp-route-id="@item.AdmissionHid" class="btn btn-outline-danger w-25 mx-1"><i class="fas fa-trash-alt" style="font-size:20px"></i></a>
+                                        <a asp-action="PatientFollowUp" asp-route-id="@item.PatientId" class="btn btn-outline-dark w-25 mx-1"><i class="fas fa-hospital-alt" style="font-size:20px"></i></a>
                                     </div>
                                 </div>
 

@@ -9,7 +9,7 @@ namespace EHR.Database
         {
             AdmissionH = new HashSet<AdmissionH>();
             Bill = new HashSet<Bill>();
-            PrescriptionH = new HashSet<PrescriptionH>();
+            Visit = new HashSet<Visit>();
         }
 
         public int PatientId { get; set; }
@@ -24,11 +24,12 @@ namespace EHR.Database
         public int? Ssn { get; set; }
         public string PatientMobile { get; set; }
         public string PatientEmail { get; set; }
+        public bool IsAdmissioned { get; set; }
 
         public virtual Gender Gender { get; set; }
         public virtual States State { get; set; }
         public virtual ICollection<AdmissionH> AdmissionH { get; set; }
         public virtual ICollection<Bill> Bill { get; set; }
-        public virtual ICollection<PrescriptionH> PrescriptionH { get; set; }
+        public virtual ICollection<Visit> Visit { get; set; }
     }
 }
