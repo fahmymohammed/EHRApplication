@@ -31,12 +31,12 @@ namespace EHR.Models.viewModel
         public ICollection<Insurance> insurances { get; set; }
         public ICollection<Medicine> medicines { get; set; }
         public ICollection<Visit> visits { get; set; }
-        public ICollection<PrescriptionH> prescriptionHs { get; set; }
+        public ICollection<Prescription> prescriptionHs { get; set; }
 
         public admissionFullviewModel()
         {
             visits = new HashSet<Visit>();
-            prescriptionHs = new HashSet<PrescriptionH>();
+            prescriptionHs = new HashSet<Prescription>();
         }
 
     }

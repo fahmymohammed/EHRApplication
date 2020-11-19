@@ -7,7 +7,7 @@ namespace EHR.Database
     {
         public Visit()
         {
-            PrescriptionH = new HashSet<PrescriptionH>();
+            Prescription = new HashSet<Prescription>();
         }
 
         public int VisitId { get; set; }
@@ -17,6 +17,6 @@ namespace EHR.Database
 
         public virtual Doctor Doctor { get; set; }
         public virtual Patient Patient { get; set; }
-        public virtual ICollection<PrescriptionH> PrescriptionH { get; set; }
+        public virtual ICollection<Prescription> Prescription { get; set; }
     }
 }

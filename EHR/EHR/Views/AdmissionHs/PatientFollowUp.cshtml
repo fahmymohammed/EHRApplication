@@ -59,7 +59,7 @@
             </div>
             @if (Model.visits.Count() > 0)
             {
-                <table class="table table-bordered table-striped" style="width:100%">
+                <table class="table table-bordered table-striped" style="width:100%" id="TableDataFetch">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -71,7 +71,10 @@
                         {
                             <tr>
                                 <td style="width:20%">
-                                    @Html.DisplayFor(model => item.VisitDate)
+                                    <label style="color:blue;text-decoration:underline;cursor:pointer" onclick="info(@item.VisitId)">@Html.DisplayFor(model => item.VisitDate)</label>
+                                    @*<a href="" onclick="info(@item.VisitId)"></a>*@
+
+
                                 </td>
                                 <td style="width:80%">
                                     @Html.DisplayFor(model => item.Doctor.DoctorFirstName) @Html.DisplayFor(model => item.Doctor.DoctorLastName)
@@ -86,6 +89,29 @@
             {
                 <h3 class="text-danger text-center text-lg-center">NO DATA EXISTS</h3>
             }
+            <hr />
+
+            <div id="visitinfo">
+                <div class="row pt-4 col-12">
+                    <h5 class="text-primary pl-0">Prescriptions Info</h5>
+                </div>
+                <table class="table table-bordered table-striped" style="width:100%" id="prescriptionData">
+                    <thead>
+                        <tr>
+                            <th>Drugs</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            NO DATA EXISTS
+                        </td>
+                    </tr>
+                    <tbody>
+                    </tbody>
+
+                </table>
+            </div>
+
 
         </div>
     </div>
@@ -99,42 +125,40 @@
     }
     <script>
         $(document).ready(function () {
-            $("#AdmissionDateTime").datepicker({
-                dateFormat: "mm/dd/yy",
-                isRTL: true,
-                duration: "slow",
-                firstDay: 1,
-                showOn: "focus"
-            }).datepicker("setDate", "0");
+            $("#mainDiv").fadeIn(500);
 
-            $("#mainDiv").fadeIn(1000);
+            $('#TableDataFetch').DataTable();
+
+            $("#TableDataFetch td").click(function () {
+                $('.selected').removeClass('selected');
+                $(this).parents('tr').addClass('selected');
+
+            });
+
+            $('tr').mouseover(function () {
+                $('tr').css('cursor', 'pointer');
+            });
 
         });
 
-        $('#submit').click(function () {
-            var mydata = {
-                PatientId: $('#PatientId option:selected').val(),
-                RoomId: $('#RoomId option:selected').val(),
-                DoctorId: $('#DoctorId option:selected').val(),
-                AdmissionDateTime: $('#AdmissionDateTime').val(),
-                InsuranceId: $('#InsuranceId').val()
-            }
-
+        function info(visitidinfo) {
+            $("#prescriptionData").find("tr:gt(0)").remove();
+            $('#prescriptionData').hide();
             $.ajax({
-                type: 'POST',
-                url: '/AdmissionHs/CreateNewAdmissionPost/',
-                data: JSON.stringify(mydata),
-                contentType: 'application/json',
-                dataType: 'JSON',
-                success: function (response) {
-                    if (response.status) {
-
-                    } else {
+                url: '/AdmissionHs/GetPrescriptionInfo/' + visitidinfo,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log(Object.keys(data.mydata).length);
+                    for (var i = 0; i < Object.keys(data.mydata).length; i++) {
+                        $('#prescriptionData').append(`<tr><td>${data.mydata[i]}</td></tr>`);
 
                     }
-                }
-            });
-        })
+                    $('#prescriptionData').show(1000);
 
+                }
+
+            });
+        }
     </script>
 }

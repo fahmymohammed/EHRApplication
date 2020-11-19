@@ -7,7 +7,7 @@ namespace EHR.Database
     {
         public Medicine()
         {
-            PrescriptionD = new HashSet<PrescriptionD>();
+            Prescription = new HashSet<Prescription>();
         }
 
         public int MedicineId { get; set; }
@@ -16,6 +16,6 @@ namespace EHR.Database
         public DateTime MedicineexpiredDate { get; set; }
         public string MedicineDoseNote { get; set; }
 
-        public virtual ICollection<PrescriptionD> PrescriptionD { get; set; }
+        public virtual ICollection<Prescription> Prescription { get; set; }
     }
 }

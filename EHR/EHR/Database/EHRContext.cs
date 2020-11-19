@@ -31,8 +31,7 @@ namespace EHR.Database
         public virtual DbSet<Insurance> Insurance { get; set; }
         public virtual DbSet<Medicine> Medicine { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
-        public virtual DbSet<PrescriptionD> PrescriptionD { get; set; }
-        public virtual DbSet<PrescriptionH> PrescriptionH { get; set; }
+        public virtual DbSet<Prescription> Prescription { get; set; }
         public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<RoomType> RoomType { get; set; }
         public virtual DbSet<States> States { get; set; }
@@ -382,11 +381,14 @@ namespace EHR.Database
                     .HasConstraintName("FK_Patient_States");
             });
 
-            modelBuilder.Entity<PrescriptionD>(entity =>
+            modelBuilder.Entity<Prescription>(entity =>
             {
-                entity.ToTable("prescriptionD");
+                entity.HasKey(e => e.PrescriptionHid)
+                    .HasName("PK_prescriptionH");
 
-                entity.Property(e => e.PrescriptionDid).HasColumnName("prescriptionDID");
+                entity.ToTable("prescription");
+
+                entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
 
                 entity.Property(e => e.Cost).HasColumnName("cost");
 
@@ -394,35 +396,19 @@ namespace EHR.Database
 
                 entity.Property(e => e.Note).HasMaxLength(500);
 
-                entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
-
-                entity.HasOne(d => d.Medicine)
-                    .WithMany(p => p.PrescriptionD)
-                    .HasForeignKey(d => d.MedicineId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_prescriptionD_Medicine");
-
-                entity.HasOne(d => d.PrescriptionH)
-                    .WithMany(p => p.PrescriptionD)
-                    .HasForeignKey(d => d.PrescriptionHid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_prescriptionD_prescriptionH");
-            });
-
-            modelBuilder.Entity<PrescriptionH>(entity =>
-            {
-                entity.ToTable("prescriptionH");
-
-                entity.Property(e => e.PrescriptionHid).HasColumnName("prescriptionHID");
-
                 entity.Property(e => e.PrescriptionHdate)
                     .HasColumnName("prescriptionHDate")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.VisitId).HasColumnName("VisitID");
 
+                entity.HasOne(d => d.Medicine)
+                    .WithMany(p => p.Prescription)
+                    .HasForeignKey(d => d.MedicineId)
+                    .HasConstraintName("FK_prescription_Medicine");
+
                 entity.HasOne(d => d.Visit)
-                    .WithMany(p => p.PrescriptionH)
+                    .WithMany(p => p.Prescription)
                     .HasForeignKey(d => d.VisitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_prescriptionH_Visit");

@@ -3,6 +3,7 @@ using EHR.Models.viewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -252,7 +253,7 @@ namespace EHR.Controllers
 
             var Patient = _context.Patient.Include(x => x.AdmissionH).Where(x => x.PatientId == id).Include(x => x.Visit).FirstOrDefault();
             var PatientAdmissionH = _context.AdmissionH.Where(x => x.PatientId == Patient.PatientId).Include(x => x.Doctor).Include(x => x.Room).Include(x => x.Insurance).FirstOrDefault();
-            var PatientVisit = _context.Visit.Where(x => x.PatientId == Patient.PatientId).Include(x => x.Doctor).Include(x => x.PrescriptionH).ToList();
+            var PatientVisit = _context.Visit.Where(x => x.PatientId == Patient.PatientId).Include(x => x.Doctor).Include(x => x.Prescription).ToList();
 
 
             //var Patient = _context.AdmissionH
@@ -291,6 +292,23 @@ namespace EHR.Controllers
             ViewData["MedicineId"] = new SelectList(_context.Medicine, "MedicineId", "InsuranceName");
 
             return View(admissionFullviewModel);
+
+        }
+
+        [HttpGet]
+        public ActionResult GetPrescriptionInfo( int id )
+        {
+
+            var prescription = _context.Prescription.Include(x => x.Medicine).Where(x => x.VisitId == id).ToList();
+
+            List<string> prescriptionData = new List<string>();
+
+            foreach (var item in prescription)
+            {
+                prescriptionData.Add(item.Medicine.MedicineName);
+            }
+
+            return Json(new { status = true, mydata = prescriptionData });
 
         }
     }
