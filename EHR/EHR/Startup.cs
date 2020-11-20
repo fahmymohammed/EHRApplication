@@ -1,5 +1,5 @@
 using EHR.Data;
-using EHR.Database;
+using Databasae.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

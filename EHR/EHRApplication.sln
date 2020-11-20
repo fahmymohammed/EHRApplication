@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Databasae", "Databasae\Databasae.csproj", "{328EC871-1D45-4402-8C4B-C97E0E5255B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EHR", "EHR\EHR.csproj", "{6CC98192-50F4-41B2-B9E2-5EA720371596}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{328EC871-1D45-4402-8C4B-C97E0E5255B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{328EC871-1D45-4402-8C4B-C97E0E5255B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{328EC871-1D45-4402-8C4B-C97E0E5255B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{328EC871-1D45-4402-8C4B-C97E0E5255B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC98192-50F4-41B2-B9E2-5EA720371596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC98192-50F4-41B2-B9E2-5EA720371596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC98192-50F4-41B2-B9E2-5EA720371596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC98192-50F4-41B2-B9E2-5EA720371596}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {193B1C14-A0C9-4D27-B5EC-522FA9AFCB4E}
+	EndGlobalSection
+EndGlobal

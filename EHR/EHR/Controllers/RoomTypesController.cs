@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Databasae.Database;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using EHR.Database;
 
 namespace EHR.Controllers
 {
@@ -13,7 +10,7 @@ namespace EHR.Controllers
     {
         private readonly EHRContext _context;
 
-        public RoomTypesController(EHRContext context)
+        public RoomTypesController( EHRContext context )
         {
             _context = context;
         }
@@ -25,7 +22,7 @@ namespace EHR.Controllers
         }
 
         // GET: RoomTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details( int? id )
         {
             if (id == null)
             {
@@ -53,7 +50,7 @@ namespace EHR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomTypeId,RoomTypeName")] RoomType roomType)
+        public async Task<IActionResult> Create( [Bind("RoomTypeId,RoomTypeName")] RoomType roomType )
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,7 @@ namespace EHR.Controllers
         }
 
         // GET: RoomTypes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit( int? id )
         {
             if (id == null)
             {
@@ -85,7 +82,7 @@ namespace EHR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomTypeId,RoomTypeName")] RoomType roomType)
+        public async Task<IActionResult> Edit( int id, [Bind("RoomTypeId,RoomTypeName")] RoomType roomType )
         {
             if (id != roomType.RoomTypeId)
             {
@@ -116,7 +113,7 @@ namespace EHR.Controllers
         }
 
         // GET: RoomTypes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete( int? id )
         {
             if (id == null)
             {
@@ -136,7 +133,7 @@ namespace EHR.Controllers
         // POST: RoomTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed( int id )
         {
             var roomType = await _context.RoomType.FindAsync(id);
             _context.RoomType.Remove(roomType);
@@ -144,7 +141,7 @@ namespace EHR.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoomTypeExists(int id)
+        private bool RoomTypeExists( int id )
         {
             return _context.RoomType.Any(e => e.RoomTypeId == id);
         }

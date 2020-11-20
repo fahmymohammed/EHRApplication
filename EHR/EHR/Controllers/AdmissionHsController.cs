@@ -1,4 +1,4 @@
-﻿using EHR.Database;
+﻿using Databasae.Database;
 using EHR.Models.viewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

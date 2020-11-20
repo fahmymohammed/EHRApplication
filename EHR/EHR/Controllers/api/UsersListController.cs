@@ -1,4 +1,4 @@
-﻿using EHR.Database;
+﻿using Databasae.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

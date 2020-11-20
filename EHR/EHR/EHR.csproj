@@ -68,7 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DB_Scripts_BK\" />
+    <ProjectReference Include="..\Databasae\Databasae.csproj" />
   </ItemGroup>
 
 </Project>

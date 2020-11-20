@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EHR.Database
+namespace Databasae.Database
 {
     public partial class Visit
     {

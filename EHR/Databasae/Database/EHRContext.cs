@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace EHR.Database
+namespace Databasae.Database
 {
     public partial class EHRContext : DbContext
     {
