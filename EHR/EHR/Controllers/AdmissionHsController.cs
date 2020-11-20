@@ -281,6 +281,7 @@ namespace EHR.Controllers
             admissionFullviewModel.DoctorLastName = PatientAdmissionH.Doctor.DoctorLastName;
             admissionFullviewModel.RoomNum = PatientAdmissionH.Room.RoomNum;
             admissionFullviewModel.InsuranceName = PatientAdmissionH.Insurance.InsuranceName;
+            admissionFullviewModel.IsAdmissioned = Patient.IsAdmissioned;
             admissionFullviewModel.visits = PatientVisit;
 
 

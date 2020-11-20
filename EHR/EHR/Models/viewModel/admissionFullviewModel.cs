@@ -1,4 +1,4 @@
-﻿using EHR.Database;
+﻿    using EHR.Database;
 using System;
 using System.Collections.Generic;
 
@@ -22,6 +22,7 @@ namespace EHR.Models.viewModel
         public int RoomNum { get; set; }
         public string InsuranceName { get; set; }
         public int PrescriptionHid { get; set; }
+        public bool IsAdmissioned { get; set; }
 
 
 

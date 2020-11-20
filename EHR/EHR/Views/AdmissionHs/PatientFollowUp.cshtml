@@ -13,7 +13,7 @@
             <div class="row pt-4 col-12">
                 <h5 class="text-primary pl-0">Patient Info</h5>
             </div>
-            <table class="table table-bordered table-striped" style="width:100%">
+            <table id="PatientTable" class="table table-bordered table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>Patient</th>
@@ -47,12 +47,29 @@
 
 
             <div class="form-group row pt-4 col-12">
-                <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
-                <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
-                <button type="button" class="btn btn-outline-primary mr-4" id="submit">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
-                <button type="button" class="btn btn-dark mr-4" id="submit">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
+                @if (Model.IsAdmissioned == true)
+                {
+                    <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="hide">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-dark mr-4" id="submit">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
+                }
                 <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
             </div>
+            <br />
+
+
+            <div id="addVisit" style="display:none">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <input class="form-control" id="roomNumTransfer" />
+                        <button type="button" class="btn btn-outline-primary" onclick="transferRoom()"><i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+
             <br />
             <div class="row pt-4 col-12">
                 <h5 class="text-primary pl-0">Visits Info</h5>
@@ -160,5 +177,20 @@
 
             });
         }
+
+        $("#hide").click(function () {
+            $("#addVisit").show();
+            $('#roomNumTransfer').val('')
+        });
+
+        function transferRoom() {
+            $("#PatientTable tr").each(function () {
+                $(this).find("td:eq(4)").text($('#roomNumTransfer').val());
+                $("#addVisit").hide();
+
+                //Ajax post for room
+
+            });
+        };
     </script>
 }
