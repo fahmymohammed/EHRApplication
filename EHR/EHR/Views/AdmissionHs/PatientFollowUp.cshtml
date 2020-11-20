@@ -49,9 +49,9 @@
             <div class="form-group row pt-4 col-12">
                 @if (Model.IsAdmissioned == true)
                 {
-                    <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
-                    <button type="button" class="btn btn-outline-primary mr-4" id="submit">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
-                    <button type="button" class="btn btn-outline-primary mr-4" id="hide">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="newVisit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="newPrescription">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="transfer">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-dark mr-4" id="submit">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
                 }
                 <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
@@ -66,6 +66,7 @@
                         <button type="button" class="btn btn-outline-primary" onclick="transferRoom()"><i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
                     </div>
                 </div>
+                <span class="text-danger" id="transferErrorMessage"></span>
 
             </div>
 
@@ -178,19 +179,31 @@
             });
         }
 
-        $("#hide").click(function () {
+        $("#transfer").click(function () {
             $("#addVisit").show();
             $('#roomNumTransfer').val('')
         });
 
         function transferRoom() {
             $("#PatientTable tr").each(function () {
-                $(this).find("td:eq(4)").text($('#roomNumTransfer').val());
-                $("#addVisit").hide();
-
+                myForm = $(this);
                 //Ajax post for room
+                $.ajax({
+                    type: 'POST',
+                    url: '/AdmissionHs/PatientTransfer/',
+                    data: { id :@Model.PatientId ,roomNum: $('#roomNumTransfer').val()},
+                    success: function (response) {
+                        if (response.status) {
+                            myForm.find("td:eq(4)").text($('#roomNumTransfer').val());
+                            $("#addVisit").hide();
+                        } else {
+                            $('#transferErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+                        }
+                    }
+                });
 
             });
         };
+
     </script>
 }

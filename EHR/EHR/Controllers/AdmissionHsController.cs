@@ -296,7 +296,7 @@ namespace EHR.Controllers
 
         }
 
-        [HttpGet]
+
         public ActionResult GetPrescriptionInfo( int id )
         {
 
@@ -310,6 +310,23 @@ namespace EHR.Controllers
             }
 
             return Json(new { status = true, mydata = prescriptionData });
+
+        }
+
+        public ActionResult PatientTransfer( int id, int roomNum )
+        {
+
+            var patient = _context.AdmissionH.Where(x => x.PatientId == id).SingleOrDefault();
+            var room = _context.Room.Where(x => x.RoomNum == roomNum).SingleOrDefault();
+            if (room == null)
+            {
+                return Json(new { status = false, responseText = "is not exist" });
+            }
+            patient.RoomId = room.RoomId;
+            _context.Update(patient);
+            _context.SaveChanges();
+
+            return Json(new { status = true });
 
         }
     }
