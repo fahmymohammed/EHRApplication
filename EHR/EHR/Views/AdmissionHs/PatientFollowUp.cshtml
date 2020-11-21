@@ -182,7 +182,6 @@
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
-                    console.log(Object.keys(data.mydata).length);
                     for (var i = 0; i < Object.keys(data.mydata).length; i++) {
                         $('#prescriptionData').append(`<tr><td>${data.mydata[i]}</td></tr>`);
 
@@ -239,6 +238,22 @@
                         if (response.status) {
                             $("#addNewPrescription").hide();
                             info($('#visitId option:selected').val());
+                            console.log($('#visitId option:selected').text());
+                            $('#TableDataFetch tr td label').each(function () {
+                                if ($(this).text() == $('#visitId option:selected').text()) {
+                                    $('.selected').removeClass('selected');
+                                    $(this).parents('tr').addClass('selected');
+                                }
+                            });
+
+
+
+
+
+
+
+
+
                         } else {
                             //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
                         }
