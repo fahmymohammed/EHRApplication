@@ -345,5 +345,23 @@ namespace EHR.Controllers
             return Json(new { status = true });
 
         }
+
+        [HttpPost]
+        public ActionResult PatientDischarge( int id )
+        {
+            var patientAdmission = _context.AdmissionH.Where(x => x.PatientId == id).SingleOrDefault();
+            var patient = _context.Patient.Where(x => x.PatientId == id).SingleOrDefault();
+
+            patientAdmission.Discharge = true;
+            patient.IsAdmissioned = false;
+
+            _context.Update(patientAdmission);
+            _context.Update(patient);
+
+            _context.SaveChanges();
+
+            return Json(new { status = true });
+
+        }
     }
 }

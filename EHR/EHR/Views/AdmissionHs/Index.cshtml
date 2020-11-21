@@ -37,6 +37,7 @@
                         <th>Insurance</th>
                         <th>Doctor</th>
                         <th>Room</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -47,7 +48,7 @@
                             <td style="width:20%">
                                 @item.Patient.PatientFirstName @item.Patient.PatientLastName
                             </td>
-                            <td style="width:20%">
+                            <td style="width:27%">
                                 @item.AdmissionDateTime
                             </td>
                             <td style="width:20%">
@@ -56,8 +57,20 @@
                             <td style="width:20%">
                                 @item.Doctor.DoctorFirstName @item.Doctor.DoctorLastName
                             </td>
-                            <td style="width:13%">
+                            <td style="width:10%">
                                 @item.Room.RoomNum
+                            </td>
+                            <td style="width:13%">
+                                @if (@item.Discharge)
+                                {
+                                    <label class="text-danger" style="font-weight:bold">Discharged</label>
+                                }
+                                else
+                                {
+                                    <label>Admissioned</label>
+                                }
+
+
                             </td>
                             <td>
                                 <div class="text-center">
@@ -80,6 +93,7 @@
                         <th>Insurance</th>
                         <th>Doctor</th>
                         <th>Room</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </tfoot>

@@ -52,9 +52,34 @@
                     <button type="button" class="btn btn-outline-primary mr-4" id="newVisit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-outline-primary mr-4" id="Prescription">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-outline-primary mr-4" id="transfer">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
-                    <button type="button" class="btn btn-dark mr-4" id="submit">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-dark mr-4" id="discharge">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
                 }
                 <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
+            </div>
+
+            @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+            @*Patient Discharge*@
+            <br />
+            <div id="PatientDischarge" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" id="closePatientDischarge">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <h2 class="text-danger">you are about to Discharge Patient @Model.PatientFirstName @Model.PatientLastName ! </h2>
+                        <h3>are you Sure ?</h3>
+                        <br />
+                        <div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-danger" onclick="PatientDischarge()"><i class="fas fa-check-circle" style="font-size:30px;width:100px"></i></button>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="transferErrorMessage"></span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
@@ -282,6 +307,8 @@
 
 
         //Add new Prescription
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         var modaladdNewPrescription = document.getElementById("addNewPrescription");
         var btnPrescription = document.getElementById("Prescription");
         var span = document.getElementById("closeaddNewPrescription");
@@ -319,6 +346,51 @@
                                     $(this).parents('tr').addClass('selected');
                                 }
                             });
+
+                        } else {
+                            //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+                        }
+                    }
+                });
+        };
+
+
+        //Patient Discharge
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        var modalaPatientDischarge = document.getElementById("PatientDischarge");
+        var btndischarge = document.getElementById("discharge");
+        var span = document.getElementById("closePatientDischarge");
+        btndischarge.onclick = function () {
+            modalaPatientDischarge.style.display = "block";
+        }
+        span.onclick = function () {
+            modalaPatientDischarge.style.display = "none";
+        }
+        //window.onclick = function (event) {
+        //    if (event.target == modaladdNewPrescription) {
+        //        modaladdNewPrescription.style.display = "none";
+        //    }
+        //}
+
+        //$("#Prescription").click(function () {
+        //    $("#addNewPrescription").show();
+        //});
+
+        function PatientDischarge() {
+                myForm = $(this);
+                //Ajax post for New Prescription
+                $.ajax({
+                    type: 'POST',
+                    url: '/AdmissionHs/PatientDischarge/',
+                    data: { id:@Model.PatientId},
+                    success: function (response) {
+                        if (response.status) {
+                            $('#newVisit').prop('disabled', true);
+                            $('#Prescription').prop('disabled', true);
+                            $('#transfer').prop('disabled', true);
+                            $('#discharge').prop('disabled', true);
+                            document.getElementById("PatientDischarge").style.display = "none";
 
                         } else {
                             //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
