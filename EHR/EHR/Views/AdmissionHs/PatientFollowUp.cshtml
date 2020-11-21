@@ -50,7 +50,7 @@
                 @if (Model.IsAdmissioned == true)
                 {
                     <button type="button" class="btn btn-outline-primary mr-4" id="newVisit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
-                    <button type="button" class="btn btn-outline-primary mr-4" id="Prescription">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="Prescription" onclick="addNewPrescription()" disabled>New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-outline-primary mr-4" id="transfer">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-dark mr-4" id="discharge">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
                 }
@@ -122,9 +122,9 @@
                         <div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId" style="width:220px"></select>
+                                    <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId" style="width:220px" onchange="info($('#visitId option:selected').val());"></select>
                                     <select asp-for="MedicineId" class="form-control" asp-items="ViewBag.MedicineId" id="medicineId" style="width:200px"></select>
-                                    <button type="button" class="btn btn-outline-primary" onclick="newPrescription()"><i class="fas fa-prescription" style="font-size:20px"></i></button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="checknewPrescription($('#medicineId option:selected').text())"><i class="fas fa-prescription" style="font-size:20px"></i></button>
                                 </div>
                             </div>
                             <span class="text-danger" id="PrescriptionErrorMessage"></span>
@@ -242,24 +242,7 @@
 
         });
 
-        function info(visitidinfo) {
-            $("#prescriptionData").find("tr:gt(0)").remove();
-            $('#prescriptionData').hide();
-            $.ajax({
-                url: '/AdmissionHs/GetPrescriptionInfo/' + visitidinfo,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    for (var i = 0; i < Object.keys(data.mydata).length; i++) {
-                        $('#prescriptionData').append(`<tr><td>${data.mydata[i]}</td></tr>`);
 
-                    }
-                    $('#prescriptionData').show(1000);
-
-                }
-
-            });
-        }
 
         //Transfer to New Room
 
@@ -309,26 +292,75 @@
         //Add new Prescription
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        var modaladdNewPrescription = document.getElementById("addNewPrescription");
-        var btnPrescription = document.getElementById("Prescription");
-        var span = document.getElementById("closeaddNewPrescription");
-        btnPrescription.onclick = function () {
-            modaladdNewPrescription.style.display = "block";
-        }
-        span.onclick = function () {
-            modaladdNewPrescription.style.display = "none";
-        }
-        //window.onclick = function (event) {
-        //    if (event.target == modaladdNewPrescription) {
-        //        modaladdNewPrescription.style.display = "none";
-        //    }
-        //}
+        function info(visitidinfo) {
+            $('#PrescriptionErrorMessage').text('');
+            $('#Prescription').prop('disabled', false);
+            $("#prescriptionData").find("tr:gt(0)").remove();
+            $('#prescriptionData').hide();
+            $.ajax({
+                url: '/AdmissionHs/GetPrescriptionInfo/' + visitidinfo,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    for (var i = 0; i < Object.keys(data.mydata).length; i++) {
+                        $('#prescriptionData').append(`<tr><td>${data.mydata[i]}</td></tr>`);
 
-        //$("#Prescription").click(function () {
-        //    $("#addNewPrescription").show();
-        //});
+                    }
+                    $('#prescriptionData').show(1000);
+
+                    $('#TableDataFetch tr td label').each(function () {
+                        if ($(this).text() == $('#visitId option:selected').text()) {
+                            $('.selected').removeClass('selected');
+                            $(this).parents('tr').addClass('selected');
+                        }
+                    });
+
+                }
+
+            });
+        }
+
+        function addNewPrescription() {
+            $('#PrescriptionErrorMessage').text('');
+
+            var modaladdNewPrescription = document.getElementById("addNewPrescription");
+            var btnPrescription = document.getElementById("Prescription");
+            var span = document.getElementById("closeaddNewPrescription");
+            btnPrescription.onclick = function () {
+                modaladdNewPrescription.style.display = "block";
+            }
+            span.onclick = function () {
+                modaladdNewPrescription.style.display = "none";
+                $('#prescriptionData tr td').each(function () {
+                    $(this).parent().css('background-color', '')
+                    $('#PrescriptionErrorMessage').text('');
+
+                });
+            }
+            //window.onclick = function (event) {
+            //    if (event.target == modaladdNewPrescription) {
+            //        modaladdNewPrescription.style.display = "none";
+            //    }
+            //}
+
+            //$("#Prescription").click(function () {
+            //    $("#addNewPrescription").show();
+            //});
+
+
+
+        }
 
         function newPrescription() {
+            $('#TableDataFetch tr td label').each(function () {
+                if ($(this).text() == $('#visitId option:selected').text()) {
+                    $('.selected').removeClass('selected');
+                    $(this).parents('tr').addClass('selected');
+                }
+            });
+
+
+
                 myForm = $(this);
                 //Ajax post for New Prescription
                 $.ajax({
@@ -340,6 +372,7 @@
                             $("#addNewPrescription").hide();
                             info($('#visitId option:selected').val());
                             console.log($('#visitId option:selected').text());
+                            $('#PrescriptionErrorMessage').text('');
                             $('#TableDataFetch tr td label').each(function () {
                                 if ($(this).text() == $('#visitId option:selected').text()) {
                                     $('.selected').removeClass('selected');
@@ -354,6 +387,28 @@
                 });
         };
 
+        function checknewPrescription(medicineName) {
+            console.log(medicineName);
+            let isValid = true;
+            $('#prescriptionData tr td').each(function () {
+                $(this).parent().css('background-color', '')
+                $('#PrescriptionErrorMessage').text('');
+
+            });
+
+
+            $('#prescriptionData tr td').each(function () {
+                if ($(this).text() == medicineName) {
+                    isValid = false;
+                    $(this).parent().css('background-color', '#f00')
+                    $('#PrescriptionErrorMessage').text('*Prescription already added');
+                }
+            });
+            if (isValid) {
+                newPrescription();
+            }
+
+        }
 
         //Patient Discharge
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
