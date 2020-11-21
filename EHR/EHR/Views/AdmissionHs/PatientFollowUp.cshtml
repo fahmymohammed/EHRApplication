@@ -50,7 +50,7 @@
                 @if (Model.IsAdmissioned == true)
                 {
                     <button type="button" class="btn btn-outline-primary mr-4" id="newVisit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
-                    <button type="button" class="btn btn-outline-primary mr-4" id="newPrescription">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="Prescription">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-outline-primary mr-4" id="transfer">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-dark mr-4" id="submit">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
                 }
@@ -58,15 +58,28 @@
             </div>
             <br />
 
-
+            @*Transfer To New Room*@
             <div id="addVisit" style="display:none">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <input class="form-control" id="roomNumTransfer" />
+                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId" id="roomNumTransfer"></select>
                         <button type="button" class="btn btn-outline-primary" onclick="transferRoom()"><i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
                     </div>
                 </div>
                 <span class="text-danger" id="transferErrorMessage"></span>
+
+            </div>
+
+            @*New Prescription*@
+            <div id="addNewPrescription" style="display:none">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId"></select>
+                        <select asp-for="MedicineId" class="form-control" asp-items="ViewBag.MedicineId" id="medicineId"></select>
+                        <button type="button" class="btn btn-outline-primary" onclick="newPrescription()"><i class="fas fa-prescription" style="font-size:20px"></i></button>
+                    </div>
+                </div>
+                <span class="text-danger" id="PrescriptionErrorMessage"></span>
 
             </div>
 
@@ -145,6 +158,8 @@
         $(document).ready(function () {
             $("#mainDiv").fadeIn(500);
 
+
+
             $('#TableDataFetch').DataTable();
 
             $("#TableDataFetch td").click(function () {
@@ -179,6 +194,8 @@
             });
         }
 
+        //Transfer to New Room
+
         $("#transfer").click(function () {
             $("#addVisit").show();
             $('#roomNumTransfer').val('')
@@ -191,18 +208,42 @@
                 $.ajax({
                     type: 'POST',
                     url: '/AdmissionHs/PatientTransfer/',
-                    data: { id :@Model.PatientId ,roomNum: $('#roomNumTransfer').val()},
+                    data: { id:@Model.PatientId , roomId: $('#roomNumTransfer option:selected').val()},
                     success: function (response) {
                         if (response.status) {
-                            myForm.find("td:eq(4)").text($('#roomNumTransfer').val());
+                            myForm.find("td:eq(4)").text($('#roomNumTransfer option:selected').text());
                             $("#addVisit").hide();
                         } else {
-                            $('#transferErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+                            //$('#transferErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
                         }
                     }
                 });
 
             });
+        };
+
+
+        //Add new Prescription
+        $("#Prescription").click(function () {
+            $("#addNewPrescription").show();
+        });
+
+        function newPrescription() {
+                myForm = $(this);
+                //Ajax post for New Prescription
+                $.ajax({
+                    type: 'POST',
+                    url: '/AdmissionHs/PatientNewPrescription/',
+                    data: { visitId: $('#visitId option:selected').val(), medicineId: $('#medicineId option:selected').val()},
+                    success: function (response) {
+                        if (response.status) {
+                            $("#addNewPrescription").hide();
+                            info($('#visitId option:selected').val());
+                        } else {
+                            //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+                        }
+                    }
+                });
         };
 
     </script>

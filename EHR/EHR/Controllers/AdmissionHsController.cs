@@ -3,6 +3,7 @@ using EHR.Models.viewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -284,13 +285,14 @@ namespace EHR.Controllers
             admissionFullviewModel.IsAdmissioned = Patient.IsAdmissioned;
             admissionFullviewModel.visits = PatientVisit;
 
-
-
             ViewData["DoctorId"] = new SelectList(_context.Doctor, "DoctorId", "DoctorFirstName");
-            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName", null);
+            ViewData["PatientId"] = new SelectList((from s in _context.Patient select new { ID = s.PatientId, FullName = s.PatientFirstName + " " + s.PatientLastName }), "ID", "FullName");
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
             ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
-            ViewData["MedicineId"] = new SelectList(_context.Medicine, "MedicineId", "InsuranceName");
+            ViewData["MedicineId"] = new SelectList(_context.Medicine, "MedicineId", "MedicineName");
+            ViewData["VisitId"] = new SelectList(_context.Visit, "VisitId", "VisitDate");
+            ViewData["VisitId"] = new SelectList((from s in _context.Visit.Where(x => x.PatientId == Patient.PatientId) select new { ID = s.VisitId, visitDate = s.VisitDate }), "ID", "visitDate");
+
 
             return View(admissionFullviewModel);
 
@@ -313,17 +315,30 @@ namespace EHR.Controllers
 
         }
 
-        public ActionResult PatientTransfer( int id, int roomNum )
+        public ActionResult PatientTransfer( int id, int roomId )
         {
 
             var patient = _context.AdmissionH.Where(x => x.PatientId == id).SingleOrDefault();
-            var room = _context.Room.Where(x => x.RoomNum == roomNum).SingleOrDefault();
-            if (room == null)
-            {
-                return Json(new { status = false, responseText = "is not exist" });
-            }
-            patient.RoomId = room.RoomId;
+
+            patient.RoomId = roomId;
             _context.Update(patient);
+            _context.SaveChanges();
+
+            return Json(new { status = true });
+
+        }
+
+        [HttpPost]
+        public ActionResult PatientNewPrescription( int visitId, int medicineId )
+        {
+            var newPrescription = new Prescription
+            {
+                VisitId = visitId,
+                MedicineId = medicineId,
+                PrescriptionHdate = DateTime.Now,
+            };
+
+            _context.Add(newPrescription);
             _context.SaveChanges();
 
             return Json(new { status = true });
