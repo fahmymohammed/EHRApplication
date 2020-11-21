@@ -290,8 +290,9 @@ namespace EHR.Controllers
             ViewData["RoomId"] = new SelectList(_context.Room, "RoomId", "RoomNum");
             ViewData["InsuranceId"] = new SelectList(_context.Insurance, "InsuranceId", "InsuranceName");
             ViewData["MedicineId"] = new SelectList(_context.Medicine, "MedicineId", "MedicineName");
-            ViewData["VisitId"] = new SelectList(_context.Visit, "VisitId", "VisitDate");
+            //ViewData["VisitId"] = new SelectList(_context.Visit, "VisitId", "VisitDate");
             ViewData["VisitId"] = new SelectList((from s in _context.Visit.Where(x => x.PatientId == Patient.PatientId) select new { ID = s.VisitId, visitDate = s.VisitDate }), "ID", "visitDate");
+            //ViewData["RoomId"] = new SelectList((from s in _context.Room.Where(x => x.RoomId != PatientAdmissionH.Room.RoomId) select new { ID = s.RoomId, roomNum = s.RoomNum }), "ID", "roomNum");
 
 
             return View(admissionFullviewModel);

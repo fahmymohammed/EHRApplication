@@ -56,22 +56,65 @@
                 }
                 <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
             </div>
-            <br />
 
+            @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
             @*Transfer To New Room*@
-            <div id="addVisit" style="display:none">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId" id="roomNumTransfer"></select>
-                        <button type="button" class="btn btn-outline-primary" onclick="transferRoom()"><i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
+            <br />
+            <div id="addVisit" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" id="closeaddVisit">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Transfer to new Room</h2>
+                        <br />
+                        <div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId" id="roomNumTransfer" style="width:120px"></select>
+                                    <button type="button" class="btn btn-outline-primary" onclick="transferRoom()"><i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="transferErrorMessage"></span>
+                        </div>
                     </div>
                 </div>
-                <span class="text-danger" id="transferErrorMessage"></span>
 
             </div>
+            @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+
+            @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+            @*New Prescription*@
+            <br />
+            <div id="addNewPrescription" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" id="closeaddNewPrescription">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Add new Prescription</h2>
+                        <br />
+                        <div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId" style="width:220px"></select>
+                                    <select asp-for="MedicineId" class="form-control" asp-items="ViewBag.MedicineId" id="medicineId" style="width:200px"></select>
+                                    <button type="button" class="btn btn-outline-primary" onclick="newPrescription()"><i class="fas fa-prescription" style="font-size:20px"></i></button>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="PrescriptionErrorMessage"></span>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+
+
 
             @*New Prescription*@
-            <div id="addNewPrescription" style="display:none">
+            <!--<div id="addNewPrescription" style="display:none">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId"></select>
@@ -81,7 +124,7 @@
                 </div>
                 <span class="text-danger" id="PrescriptionErrorMessage"></span>
 
-            </div>
+            </div>-->
 
 
             <br />
@@ -195,10 +238,25 @@
 
         //Transfer to New Room
 
-        $("#transfer").click(function () {
-            $("#addVisit").show();
-            $('#roomNumTransfer').val('')
-        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        var modaladdVisit = document.getElementById("addVisit");
+        var btntransfer = document.getElementById("transfer");
+        var span = document.getElementById("closeaddVisit");
+        btntransfer.onclick = function () {
+            modaladdVisit.style.display = "block";
+        }
+        span.onclick = function () {
+            modaladdVisit.style.display = "none";
+        }
+        //window.onclick = function (event) {
+        //    if (event.target == modaladdVisit) {
+        //        modaladdVisit.style.display = "none";
+        //    }
+        //}
+        //$("#transfer").click(function () {
+        //    $("#addVisit").show();
+        //    $('#roomNumTransfer').val('')
+        //});
 
         function transferRoom() {
             $("#PatientTable tr").each(function () {
@@ -212,6 +270,7 @@
                         if (response.status) {
                             myForm.find("td:eq(4)").text($('#roomNumTransfer option:selected').text());
                             $("#addVisit").hide();
+                            modal.style.display = "none";
                         } else {
                             //$('#transferErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
                         }
@@ -223,9 +282,24 @@
 
 
         //Add new Prescription
-        $("#Prescription").click(function () {
-            $("#addNewPrescription").show();
-        });
+        var modaladdNewPrescription = document.getElementById("addNewPrescription");
+        var btnPrescription = document.getElementById("Prescription");
+        var span = document.getElementById("closeaddNewPrescription");
+        btnPrescription.onclick = function () {
+            modaladdNewPrescription.style.display = "block";
+        }
+        span.onclick = function () {
+            modaladdNewPrescription.style.display = "none";
+        }
+        //window.onclick = function (event) {
+        //    if (event.target == modaladdNewPrescription) {
+        //        modaladdNewPrescription.style.display = "none";
+        //    }
+        //}
+
+        //$("#Prescription").click(function () {
+        //    $("#addNewPrescription").show();
+        //});
 
         function newPrescription() {
                 myForm = $(this);
@@ -246,20 +320,13 @@
                                 }
                             });
 
-
-
-
-
-
-
-
-
                         } else {
                             //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
                         }
                     }
                 });
         };
+
 
     </script>
 }
