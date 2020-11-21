@@ -405,6 +405,7 @@ namespace Databasae.Database
                 entity.HasOne(d => d.Medicine)
                     .WithMany(p => p.Prescription)
                     .HasForeignKey(d => d.MedicineId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_prescription_Medicine");
 
                 entity.HasOne(d => d.Visit)

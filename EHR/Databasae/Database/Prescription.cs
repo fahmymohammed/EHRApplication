@@ -8,7 +8,7 @@ namespace Databasae.Database
         public int PrescriptionHid { get; set; }
         public DateTime PrescriptionHdate { get; set; }
         public int VisitId { get; set; }
-        public int? MedicineId { get; set; }
+        public int MedicineId { get; set; }
         public string Note { get; set; }
         public double? Cost { get; set; }
 
