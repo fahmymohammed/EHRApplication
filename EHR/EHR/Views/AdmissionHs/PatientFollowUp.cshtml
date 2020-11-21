@@ -50,7 +50,7 @@
                 @if (Model.IsAdmissioned == true)
                 {
                     <button type="button" class="btn btn-outline-primary mr-4" id="newVisit">New Visit <i class="fas fa-stethoscope" style="font-size:20px"></i></button>
-                    <button type="button" class="btn btn-outline-primary mr-4" id="Prescription" onclick="addNewPrescription()" disabled>New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
+                    <button type="button" class="btn btn-outline-primary mr-4" id="Prescription" onclick="addNewPrescription()">New Prescription <i class="fas fa-prescription" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-outline-primary mr-4" id="transfer">Transfer <i class="fas fa-exchange-alt" style="font-size:20px"></i></button>
                     <button type="button" class="btn btn-dark mr-4" id="discharge">Discharge <i class="fas fa-door-open" style="font-size:20px"></i></button>
                 }
@@ -122,7 +122,7 @@
                         <div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId" style="width:220px" onchange="info($('#visitId option:selected').val());"></select>
+                                    <select asp-for="VisitId" class="form-control" asp-items="ViewBag.VisitId" id="visitId" style="width:220px" onchange="highlightPrescriptionRow();"></select>
                                     <select asp-for="MedicineId" class="form-control" asp-items="ViewBag.MedicineId" id="medicineId" style="width:200px"></select>
                                     <button type="button" class="btn btn-outline-primary" onclick="checknewPrescription($('#medicineId option:selected').text())"><i class="fas fa-prescription" style="font-size:20px"></i></button>
                                 </div>
@@ -294,7 +294,6 @@
 
         function info(visitidinfo) {
             $('#PrescriptionErrorMessage').text('');
-            $('#Prescription').prop('disabled', false);
             $("#prescriptionData").find("tr:gt(0)").remove();
             $('#prescriptionData').hide();
             $.ajax({
@@ -308,20 +307,27 @@
                     }
                     $('#prescriptionData').show(1000);
 
-                    $('#TableDataFetch tr td label').each(function () {
-                        if ($(this).text() == $('#visitId option:selected').text()) {
-                            $('.selected').removeClass('selected');
-                            $(this).parents('tr').addClass('selected');
-                        }
-                    });
+
 
                 }
 
             });
         }
 
+        function highlightPrescriptionRow(){
+            $('#TableDataFetch tr td label').each(function () {
+                if ($(this).text() == $('#visitId option:selected').text()) {
+                    $('.selected').removeClass('selected');
+                    $(this).parents('tr').addClass('selected');
+                }
+            });
+            info($('#visitId option:selected').val())
+        }
+
         function addNewPrescription() {
             $('#PrescriptionErrorMessage').text('');
+            checknewPrescription($('#medicineId option:selected').text())
+            //alert($('#medicineId option:selected').text());
 
             var modaladdNewPrescription = document.getElementById("addNewPrescription");
             var btnPrescription = document.getElementById("Prescription");
@@ -388,6 +394,7 @@
         };
 
         function checknewPrescription(medicineName) {
+
             console.log(medicineName);
             let isValid = true;
             $('#prescriptionData tr td').each(function () {
@@ -399,9 +406,9 @@
 
             $('#prescriptionData tr td').each(function () {
                 if ($(this).text() == medicineName) {
-                    isValid = false;
                     $(this).parent().css('background-color', '#f00')
                     $('#PrescriptionErrorMessage').text('*Prescription already added');
+                    isValid = false;
                 }
             });
             if (isValid) {
