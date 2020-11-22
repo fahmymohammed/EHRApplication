@@ -56,6 +56,33 @@
                 }
                 <a asp-action="Index" class="btn btn-outline-info mr-1 w-25"><i class="fas fa-arrow-circle-left" style="font-size:20px"></i></a>
             </div>
+            @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
+            @*Add New Visit*@
+            <br />
+            <div id="addNewVisit" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" id="closeAddNewVisit">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <h2>add new Visit</h2>
+                        <br />
+                        <div>
+                            <div class="form-group row col-4">
+                                <label class="control-label">Date</label>
+                                <input class="form-control" id="visitDate" type="datetime-local" />
+                                <span class="text-danger" id="addNewVisitErrorMessage"></span>
+                            </div>
+                            <div class="form-group row col-4">
+                                <label class="control-label">Doctor</label>
+                                <select class="form-control" asp-items="ViewBag.DoctorId" id="dcotorId"></select>
+                            </div>
+                            <button class="btn btn-outline-primary" type="button" onclick="addNewVisit()"><i class="fas fa-stethoscope" style="font-size:20px"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
             @*Patient Discharge*@
@@ -85,10 +112,10 @@
             @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
             @*Transfer To New Room*@
             <br />
-            <div id="addVisit" class="modal">
+            <div id="transferToRoom" class="modal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <span class="close" id="closeaddVisit">&times;</span>
+                        <span class="close" id="closeTransferToRoom">&times;</span>
                     </div>
                     <div class="modal-body">
                         <h2>Transfer to new Room</h2>
@@ -223,243 +250,285 @@
         <partial name="_ValidationScriptsPartial" />
     }
     <script>
-        $(document).ready(function () {
-            $("#mainDiv").fadeIn(500);
+		$(document).ready(function () {
+			$("#mainDiv").fadeIn(500);
+
+			$('#TableDataFetch').DataTable();
+
+			$("#TableDataFetch td").click(function () {
+				$('.selected').removeClass('selected');
+				$(this).parents('tr').addClass('selected');
+
+			});
+
+			$('tr').mouseover(function () {
+				$('tr').css('cursor', 'pointer');
+			});
+		});
+
+
+		//Transfer to New Room
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		var modaladdVisit = document.getElementById("transferToRoom");
+		var btntransfer = document.getElementById("transfer");
+		var span = document.getElementById("closeTransferToRoom");
+		btntransfer.onclick = function () {
+			modaladdVisit.style.display = "block";
+		}
+		span.onclick = function () {
+			modaladdVisit.style.display = "none";
+		}
+		//window.onclick = function (event) {
+		//    if (event.target == modaladdVisit) {
+		//        modaladdVisit.style.display = "none";
+		//    }
+		//}
+		//$("#transfer").click(function () {
+		//    $("#transferToRoom").show();
+		//    $('#roomNumTransfer').val('')
+		//});
+
+		function transferRoom() {
+			$("#PatientTable tr").each(function () {
+				myForm = $(this);
+				//Ajax post for room
+				$.ajax({
+					type: 'POST',
+					url: '/AdmissionHs/PatientTransfer/',
+					data: { id:@Model.PatientId , roomId: $('#roomNumTransfer option:selected').val()},
+					success: function (response) {
+						if (response.status) {
+							myForm.find("td:eq(4)").text($('#roomNumTransfer option:selected').text());
+							$("#transferToRoom").hide();
+							modal.style.display = "none";
+						} else {
+							//$('#transferErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+						}
+					}
+				});
+
+			});
+		};
+
+
+		//Add new Prescription
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		function info(visitidinfo) {
+			$('#PrescriptionErrorMessage').text('');
+			$("#prescriptionData").find("tr:gt(0)").remove();
+			$('#prescriptionData').hide();
+			$.ajax({
+				url: '/AdmissionHs/GetPrescriptionInfo/' + visitidinfo,
+				type: "GET",
+				dataType: "json",
+				success: function (data) {
+					for (var i = 0; i < Object.keys(data.mydata).length; i++) {
+						$('#prescriptionData').append(`<tr><td>${data.mydata[i]}</td></tr>`);
+
+					}
+					$('#prescriptionData').show(1000);
 
 
 
-            $('#TableDataFetch').DataTable();
+				}
 
-            $("#TableDataFetch td").click(function () {
-                $('.selected').removeClass('selected');
-                $(this).parents('tr').addClass('selected');
+			});
+		}
 
-            });
+		function highlightPrescriptionRow(){
+			$('#TableDataFetch tr td label').each(function () {
+				if ($(this).text() == $('#visitId option:selected').text()) {
+					$('.selected').removeClass('selected');
+					$(this).parents('tr').addClass('selected');
+				}
+			});
+			info($('#visitId option:selected').val())
+		}
 
-            $('tr').mouseover(function () {
-                $('tr').css('cursor', 'pointer');
-            });
+		function addNewPrescription() {
+			$('#PrescriptionErrorMessage').text('');
+			checknewPrescription($('#medicineId option:selected').text())
+			//alert($('#medicineId option:selected').text());
 
-        });
+			var modaladdNewPrescription = document.getElementById("addNewPrescription");
+			var btnPrescription = document.getElementById("Prescription");
+			var span = document.getElementById("closeaddNewPrescription");
+			btnPrescription.onclick = function () {
+				modaladdNewPrescription.style.display = "block";
+			}
+			span.onclick = function () {
+				modaladdNewPrescription.style.display = "none";
+				$('#prescriptionData tr td').each(function () {
+					$(this).parent().css('background-color', '')
+					$('#PrescriptionErrorMessage').text('');
 
+				});
+			}
+			//window.onclick = function (event) {
+			//    if (event.target == modaladdNewPrescription) {
+			//        modaladdNewPrescription.style.display = "none";
+			//    }
+			//}
 
-
-        //Transfer to New Room
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        var modaladdVisit = document.getElementById("addVisit");
-        var btntransfer = document.getElementById("transfer");
-        var span = document.getElementById("closeaddVisit");
-        btntransfer.onclick = function () {
-            modaladdVisit.style.display = "block";
-        }
-        span.onclick = function () {
-            modaladdVisit.style.display = "none";
-        }
-        //window.onclick = function (event) {
-        //    if (event.target == modaladdVisit) {
-        //        modaladdVisit.style.display = "none";
-        //    }
-        //}
-        //$("#transfer").click(function () {
-        //    $("#addVisit").show();
-        //    $('#roomNumTransfer').val('')
-        //});
-
-        function transferRoom() {
-            $("#PatientTable tr").each(function () {
-                myForm = $(this);
-                //Ajax post for room
-                $.ajax({
-                    type: 'POST',
-                    url: '/AdmissionHs/PatientTransfer/',
-                    data: { id:@Model.PatientId , roomId: $('#roomNumTransfer option:selected').val()},
-                    success: function (response) {
-                        if (response.status) {
-                            myForm.find("td:eq(4)").text($('#roomNumTransfer option:selected').text());
-                            $("#addVisit").hide();
-                            modal.style.display = "none";
-                        } else {
-                            //$('#transferErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
-                        }
-                    }
-                });
-
-            });
-        };
-
-
-        //Add new Prescription
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        function info(visitidinfo) {
-            $('#PrescriptionErrorMessage').text('');
-            $("#prescriptionData").find("tr:gt(0)").remove();
-            $('#prescriptionData').hide();
-            $.ajax({
-                url: '/AdmissionHs/GetPrescriptionInfo/' + visitidinfo,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    for (var i = 0; i < Object.keys(data.mydata).length; i++) {
-                        $('#prescriptionData').append(`<tr><td>${data.mydata[i]}</td></tr>`);
-
-                    }
-                    $('#prescriptionData').show(1000);
+			//$("#Prescription").click(function () {
+			//    $("#addNewPrescription").show();
+			//});
 
 
 
-                }
+		}
 
-            });
-        }
+		function newPrescription() {
+			$('#TableDataFetch tr td label').each(function () {
+				if ($(this).text() == $('#visitId option:selected').text()) {
+					$('.selected').removeClass('selected');
+					$(this).parents('tr').addClass('selected');
+				}
+			});
 
-        function highlightPrescriptionRow(){
-            $('#TableDataFetch tr td label').each(function () {
-                if ($(this).text() == $('#visitId option:selected').text()) {
-                    $('.selected').removeClass('selected');
-                    $(this).parents('tr').addClass('selected');
-                }
-            });
-            info($('#visitId option:selected').val())
-        }
 
-        function addNewPrescription() {
-            $('#PrescriptionErrorMessage').text('');
-            checknewPrescription($('#medicineId option:selected').text())
-            //alert($('#medicineId option:selected').text());
 
-            var modaladdNewPrescription = document.getElementById("addNewPrescription");
-            var btnPrescription = document.getElementById("Prescription");
-            var span = document.getElementById("closeaddNewPrescription");
-            btnPrescription.onclick = function () {
-                modaladdNewPrescription.style.display = "block";
+				myForm = $(this);
+				//Ajax post for New Prescription
+				$.ajax({
+					type: 'POST',
+					url: '/AdmissionHs/PatientNewPrescription/',
+					data: { visitId: $('#visitId option:selected').val(), medicineId: $('#medicineId option:selected').val()},
+					success: function (response) {
+						if (response.status) {
+							$("#addNewPrescription").hide();
+							info($('#visitId option:selected').val());
+							console.log($('#visitId option:selected').text());
+							$('#PrescriptionErrorMessage').text('');
+							$('#TableDataFetch tr td label').each(function () {
+								if ($(this).text() == $('#visitId option:selected').text()) {
+									$('.selected').removeClass('selected');
+									$(this).parents('tr').addClass('selected');
+								}
+							});
+
+						} else {
+							//$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+						}
+					}
+				});
+		};
+
+		function checknewPrescription(medicineName) {
+
+			console.log(medicineName);
+			let isValid = true;
+			$('#prescriptionData tr td').each(function () {
+				$(this).parent().css('background-color', '')
+				$('#PrescriptionErrorMessage').text('');
+
+			});
+
+
+			$('#prescriptionData tr td').each(function () {
+				if ($(this).text() == medicineName) {
+					$(this).parent().css('background-color', '#f00')
+					$('#PrescriptionErrorMessage').text('*Prescription already added');
+					isValid = false;
+				}
+			});
+			if (isValid) {
+				newPrescription();
+			}
+
+		}
+
+		//Patient Discharge
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		var modalaPatientDischarge = document.getElementById("PatientDischarge");
+		var btndischarge = document.getElementById("discharge");
+		var span = document.getElementById("closePatientDischarge");
+		btndischarge.onclick = function () {
+			modalaPatientDischarge.style.display = "block";
+		}
+		span.onclick = function () {
+			modalaPatientDischarge.style.display = "none";
+		}
+		//window.onclick = function (event) {
+		//    if (event.target == modaladdNewPrescription) {
+		//        modaladdNewPrescription.style.display = "none";
+		//    }
+		//}
+
+		//$("#Prescription").click(function () {
+		//    $("#addNewPrescription").show();
+		//});
+
+		function PatientDischarge() {
+				myForm = $(this);
+				//Ajax post for New Prescription
+				$.ajax({
+					type: 'POST',
+					url: '/AdmissionHs/PatientDischarge/',
+					data: { id:@Model.PatientId},
+					success: function (response) {
+						if (response.status) {
+							$('#newVisit').prop('disabled', true);
+							$('#Prescription').prop('disabled', true);
+							$('#transfer').prop('disabled', true);
+							$('#discharge').prop('disabled', true);
+							document.getElementById("PatientDischarge").style.display = "none";
+
+						} else {
+							//$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+						}
+					}
+				});
+		};
+
+		@* Add New Visit *@
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		var modalaPatientDischarge = document.getElementById("addNewVisit");
+		var btnAddNewVisit = document.getElementById("newVisit");
+		var span = document.getElementById("closeAddNewVisit");
+		btnAddNewVisit.onclick = function () {
+			modalaPatientDischarge.style.display = "block";
+		}
+		span.onclick = function () {
+			modalaPatientDischarge.style.display = "none";
+		}
+		//window.onclick = function (event) {
+		//    if (event.target == modaladdNewPrescription) {
+		//        modaladdNewPrescription.style.display = "none";
+		//    }
+		//}
+
+		//$("#Prescription").click(function () {
+		//    $("#addNewPrescription").show();
+		//});
+
+		function addNewVisit() {
+				myForm = $(this);
+				//Ajax post for New Prescription
+			if (new Date($('#visitDate').val()) == 'Invalid Date') {
+                $('#addNewVisitErrorMessage').text('Please Enter a Date');
+			} else {
+				$.ajax({
+					type: 'POST',
+					url: '/AdmissionHs/newVisit/',
+					data: { id:@Model.PatientId, docId: $('#dcotorId option:selected').val(), visitDateTime: $('#visitDate').val() },
+					success: function (response) {
+						if (response.status) {
+							location.reload();
+							document.getElementById("addNewVisit").style.display = "none";
+
+						} else {
+							//$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
+						}
+					}
+				});
             }
-            span.onclick = function () {
-                modaladdNewPrescription.style.display = "none";
-                $('#prescriptionData tr td').each(function () {
-                    $(this).parent().css('background-color', '')
-                    $('#PrescriptionErrorMessage').text('');
 
-                });
-            }
-            //window.onclick = function (event) {
-            //    if (event.target == modaladdNewPrescription) {
-            //        modaladdNewPrescription.style.display = "none";
-            //    }
-            //}
-
-            //$("#Prescription").click(function () {
-            //    $("#addNewPrescription").show();
-            //});
-
-
-
-        }
-
-        function newPrescription() {
-            $('#TableDataFetch tr td label').each(function () {
-                if ($(this).text() == $('#visitId option:selected').text()) {
-                    $('.selected').removeClass('selected');
-                    $(this).parents('tr').addClass('selected');
-                }
-            });
-
-
-
-                myForm = $(this);
-                //Ajax post for New Prescription
-                $.ajax({
-                    type: 'POST',
-                    url: '/AdmissionHs/PatientNewPrescription/',
-                    data: { visitId: $('#visitId option:selected').val(), medicineId: $('#medicineId option:selected').val()},
-                    success: function (response) {
-                        if (response.status) {
-                            $("#addNewPrescription").hide();
-                            info($('#visitId option:selected').val());
-                            console.log($('#visitId option:selected').text());
-                            $('#PrescriptionErrorMessage').text('');
-                            $('#TableDataFetch tr td label').each(function () {
-                                if ($(this).text() == $('#visitId option:selected').text()) {
-                                    $('.selected').removeClass('selected');
-                                    $(this).parents('tr').addClass('selected');
-                                }
-                            });
-
-                        } else {
-                            //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
-                        }
-                    }
-                });
-        };
-
-        function checknewPrescription(medicineName) {
-
-            console.log(medicineName);
-            let isValid = true;
-            $('#prescriptionData tr td').each(function () {
-                $(this).parent().css('background-color', '')
-                $('#PrescriptionErrorMessage').text('');
-
-            });
-
-
-            $('#prescriptionData tr td').each(function () {
-                if ($(this).text() == medicineName) {
-                    $(this).parent().css('background-color', '#f00')
-                    $('#PrescriptionErrorMessage').text('*Prescription already added');
-                    isValid = false;
-                }
-            });
-            if (isValid) {
-                newPrescription();
-            }
-
-        }
-
-        //Patient Discharge
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        var modalaPatientDischarge = document.getElementById("PatientDischarge");
-        var btndischarge = document.getElementById("discharge");
-        var span = document.getElementById("closePatientDischarge");
-        btndischarge.onclick = function () {
-            modalaPatientDischarge.style.display = "block";
-        }
-        span.onclick = function () {
-            modalaPatientDischarge.style.display = "none";
-        }
-        //window.onclick = function (event) {
-        //    if (event.target == modaladdNewPrescription) {
-        //        modaladdNewPrescription.style.display = "none";
-        //    }
-        //}
-
-        //$("#Prescription").click(function () {
-        //    $("#addNewPrescription").show();
-        //});
-
-        function PatientDischarge() {
-                myForm = $(this);
-                //Ajax post for New Prescription
-                $.ajax({
-                    type: 'POST',
-                    url: '/AdmissionHs/PatientDischarge/',
-                    data: { id:@Model.PatientId},
-                    success: function (response) {
-                        if (response.status) {
-                            $('#newVisit').prop('disabled', true);
-                            $('#Prescription').prop('disabled', true);
-                            $('#transfer').prop('disabled', true);
-                            $('#discharge').prop('disabled', true);
-                            document.getElementById("PatientDischarge").style.display = "none";
-
-                        } else {
-                            //$('#PrescriptionErrorMessage').text(`*Error Message: Room ${$('#roomNumTransfer').val()} ${response.responseText}`);
-                        }
-                    }
-                });
-        };
+		};
 
 
     </script>

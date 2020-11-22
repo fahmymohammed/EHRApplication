@@ -363,5 +363,23 @@ namespace EHR.Controllers
             return Json(new { status = true });
 
         }
+        [HttpPost]
+        public ActionResult newVisit( int id, int docId, DateTime visitDateTime )
+        {
+
+            var newVisit = new Visit
+            {
+                VisitDate = visitDateTime,
+                DoctorId = docId,
+                PatientId = id
+            };
+            _context.Add(newVisit);
+
+            _context.SaveChanges();
+
+            return Json(new { status = true });
+
+        }
+
     }
 }
