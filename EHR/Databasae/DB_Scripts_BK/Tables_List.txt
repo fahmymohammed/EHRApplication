@@ -1,0 +1,14 @@
+Bill
+Visit
+Gender
+admissionD
+admissionH
+RoomType
+Room
+Patient
+Department
+States
+Doctor
+Medicine
+prescription
+insurance

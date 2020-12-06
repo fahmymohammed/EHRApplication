@@ -69,6 +69,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Databasae\Databasae.csproj" />
+    <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
 </Project>

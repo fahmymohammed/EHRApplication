@@ -3,6 +3,7 @@ using EHR.Models.viewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -332,12 +333,13 @@ namespace EHR.Controllers
         [HttpPost]
         public ActionResult PatientNewPrescription( int visitId, int medicineId )
         {
-            var newPrescription = new Prescription
-            {
-                VisitId = visitId,
-                MedicineId = medicineId,
-                PrescriptionHdate = DateTime.Now,
-            };
+
+            var newPrescription = Factory.CreatePrescription();
+
+            newPrescription.VisitId = visitId;
+            newPrescription.MedicineId = medicineId;
+            newPrescription.PrescriptionHdate = DateTime.Now;
+
 
             _context.Add(newPrescription);
             _context.SaveChanges();
@@ -367,12 +369,12 @@ namespace EHR.Controllers
         public ActionResult newVisit( int id, int docId, DateTime visitDateTime )
         {
 
-            var newVisit = new Visit
-            {
-                VisitDate = visitDateTime,
-                DoctorId = docId,
-                PatientId = id
-            };
+            var newVisit = Factory.CreateVisit();
+
+            newVisit.VisitDate = visitDateTime;
+            newVisit.DoctorId = docId;
+            newVisit.PatientId = id;
+
             _context.Add(newVisit);
 
             _context.SaveChanges();
