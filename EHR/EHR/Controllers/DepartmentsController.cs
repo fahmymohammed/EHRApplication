@@ -1,50 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Databasae.EntityModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Databasae.Database;
+using Service.EntityService.Interface;
+using System.Threading.Tasks;
 
 namespace EHR.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly EHRContext _context;
+        private IDepartmentService _departmentService;
 
-        public DepartmentsController(EHRContext context)
+
+        public DepartmentsController( IDepartmentService departmentService )
         {
-            _context = context;
+            _departmentService = departmentService;
+
         }
 
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Department.ToListAsync());
+            return View(await _departmentService.Index());
         }
 
-        // GET: Departments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details( int? id )
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var department = await _context.Department
-                .FirstOrDefaultAsync(m => m.DepartmentId == id);
-            if (department == null)
+            var departmentViewmodel = await _departmentService.Details(id);
+
+            if (departmentViewmodel == null)
             {
                 return NotFound();
             }
 
-            return View(department);
+            return View(departmentViewmodel);
         }
 
         // GET: Departments/Create
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -53,31 +52,30 @@ namespace EHR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartmentId,DepartmentName")] Department department)
+        public async Task<IActionResult> Create( [Bind("DepartmentId,DepartmentName")] DepartmentViewModel departmentViewModel )
         {
             if (ModelState.IsValid)
             {
-                _context.Add(department);
-                await _context.SaveChangesAsync();
+                await _departmentService.Create(departmentViewModel);
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            return View(departmentViewModel);
         }
 
         // GET: Departments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit( int? id )
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var department = await _context.Department.FindAsync(id);
-            if (department == null)
+            var departmentViewModel = await _departmentService.Edit(id);
+            if (departmentViewModel == null)
             {
                 return NotFound();
             }
-            return View(department);
+            return View(departmentViewModel);
         }
 
         // POST: Departments/Edit/5
@@ -85,9 +83,9 @@ namespace EHR.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DepartmentId,DepartmentName")] Department department)
+        public async Task<IActionResult> Edit( int id, DepartmentViewModel departmentViewModel )
         {
-            if (id != department.DepartmentId)
+            if (id != departmentViewModel.DepartmentId)
             {
                 return NotFound();
             }
@@ -96,12 +94,11 @@ namespace EHR.Controllers
             {
                 try
                 {
-                    _context.Update(department);
-                    await _context.SaveChangesAsync();
+                    await _departmentService.Edit(departmentViewModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartmentExists(department.DepartmentId))
+                    if (!DepartmentExists(departmentViewModel.DepartmentId))
                     {
                         return NotFound();
                     }
@@ -112,19 +109,18 @@ namespace EHR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            return View(departmentViewModel);
         }
 
         // GET: Departments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete( int? id )
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var department = await _context.Department
-                .FirstOrDefaultAsync(m => m.DepartmentId == id);
+            var department = await _departmentService.Delete(id);
             if (department == null)
             {
                 return NotFound();
@@ -136,17 +132,15 @@ namespace EHR.Controllers
         // POST: Departments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed( int id )
         {
-            var department = await _context.Department.FindAsync(id);
-            _context.Department.Remove(department);
-            await _context.SaveChangesAsync();
+            await _departmentService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartmentExists(int id)
+        private bool DepartmentExists( int id )
         {
-            return _context.Department.Any(e => e.DepartmentId == id);
+            return _departmentService.DepartmentExists(id);
         }
     }
 }

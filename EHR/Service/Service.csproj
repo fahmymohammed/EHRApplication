@@ -8,4 +8,9 @@
     <ProjectReference Include="..\Databasae\Databasae.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntityService\Interface\" />
+    <Folder Include="EntityService\Implementation\" />
+  </ItemGroup>
+
 </Project>

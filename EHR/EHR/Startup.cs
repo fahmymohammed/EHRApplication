@@ -1,5 +1,5 @@
-using EHR.Data;
 using Databasae.Database;
+using EHR.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Service.EntityService.Implementation;
+using Service.EntityService.Interface;
 using System;
 
 namespace EHR
@@ -37,6 +39,8 @@ namespace EHR
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IDepartmentService, DepartmentService>();
 
 
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.Formatting = Formatting.Indented);
